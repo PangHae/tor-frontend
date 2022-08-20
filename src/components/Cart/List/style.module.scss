@@ -1,0 +1,30 @@
+.Wrapper {
+  padding: 80px 40px;
+  align-items: center;
+}
+
+.Title {
+  padding-bottom: 4px;
+  margin-bottom: 30px;
+  font-size: 32px;
+  font-weight: bolder;
+}
+
+.Horizontal {
+  width: 800px;
+  margin-top: 20px;
+  border-bottom: 1px solid #888;
+}
+
+.PriceWrapper {
+  justify-content: space-between;
+  align-items: center;
+  width: 800px;
+  padding: 0 20px;
+  margin: 30px 0;
+}
+
+.Price {
+  font-size: 20px;
+  font-weight: bolder;
+}

@@ -16,8 +16,6 @@ interface props {
 }
 
 function PresetModal({ preset, onClose }: props): ReactElement {
-  console.log(`preset`);
-  console.log(preset);
   const [cartProducts, setCartProducts] = useState<ProductType[]>(
     preset.products!.map((product) => {
       return { ...product };
@@ -54,7 +52,6 @@ function PresetModal({ preset, onClose }: props): ReactElement {
   const handleClose = () => {
     onClose();
     setCartProducts(preset.products!);
-    console.log(preset.products!);
   };
 
   return (

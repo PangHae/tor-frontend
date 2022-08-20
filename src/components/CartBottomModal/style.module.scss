@@ -1,0 +1,25 @@
+.Wrapper {
+  position: fixed;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 500px;
+  height: 200px;
+  bottom: -100px;
+  padding: 20px 30px;
+  border-radius: 50px;
+  z-index: 2;
+  border: 20px solid lighten(rgb(229, 198, 239), 4%);
+  background: #fff;
+}
+
+.PriceWrapper {
+  align-items: center;
+  p {
+    margin-right: 5px;
+  }
+}
+
+.Price {
+  font-size: 20px;
+  font-weight: bolder;
+}
