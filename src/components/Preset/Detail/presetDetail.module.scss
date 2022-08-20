@@ -1,0 +1,90 @@
+.PresetDetail {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+  margin: 0px auto;
+  margin-bottom: 60px;
+  & > .PresetInfo {
+    display: flex;
+    margin: 20px auto;
+    & > .PresetDescript {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 20px;
+      & > .CategoryName {
+        flex: 0.3;
+        font-size: 14px;
+        color: gray;
+      }
+      & > .Producer {
+        flex: 0.3;
+        font-size: 16px;
+      }
+      & > .PresetName {
+        flex: 0.5;
+        font-size: 28px;
+      }
+      & > .PresetContent {
+        flex: 1.5;
+        font-size: 14px;
+      }
+    }
+  }
+  & > .PresetProducts {
+    display: flex;
+    flex-direction: column;
+    & > .TableHeader {
+      display: flex;
+      flex-direction: row;
+      background-color: rgb(229, 198, 239);
+      & > .TableText {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        height: 36px;
+        line-height: 28px;
+        margin: 4px;
+        padding: 4px;
+        & > p {
+          text-align: center;
+        }
+      }
+    }
+    & > .ProductCheck {
+      display: flex;
+    }
+  }
+}
+.TotalPrice {
+  display: flex;
+  width: 1200px;
+  height: 60px;
+  line-height: 60px;
+  position: fixed;
+  background-color: rgb(229, 198, 239);
+  bottom: 0;
+  & > .TotalQuantity {
+    flex: 1.5;
+    text-align: center;
+  }
+  & > .TotalPriceDetail {
+    flex: 1.5;
+    text-align: right;
+    font-size: 28px;
+    font-weight: bolder;
+  }
+  & > button {
+    flex: 0.8;
+    margin: auto 200px auto 40px;
+  }
+}
+
+.Flex3 {
+  flex: 3;
+}
+
+.Flex1 {
+  flex: 1;
+  justify-content: center;
+}
