@@ -38,6 +38,7 @@
         "specialLink": ["hrefLeft", "hrefRight"],
         "aspects": ["invalidHref", "preferButton"]
       }
-    ]
+    ],
+    "no-param-reassign": "off"
   }
 }
