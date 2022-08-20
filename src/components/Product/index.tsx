@@ -14,20 +14,22 @@ import styles from './style.module.scss';
 
 interface props {
   product: ProductType;
-  funcBind: [(productID: number) => void, (productID: number) => void];
+  funcBind?: [(productID: number) => void, (productID: number) => void];
   cartFuncBind?: [(productID: number) => void, (productID: number) => void];
   isCheckBoxShow?: boolean;
 }
 
 function Product({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): ReactElement {
-  const [onTotalPriceAdd, onTotalPriceSub] = funcBind;
+  const [onTotalPriceAdd, onTotalPriceSub] = funcBind || [
+    (presetId: number) => {},
+    (presetId: number) => {},
+  ];
   const [handleProductChecked, handleProductUnchecked] = cartFuncBind || [
     (presetId: number) => {},
     (presetId: number) => {},
   ];
   const [price, setPrice] = useState(product.price);
   const [count, setCount] = useState(product.count);
-  const [checked, setChecked] = useState(product.checked);
   const handleAdd = () => {
     setPrice(price + product.price);
     setCount(count + 1);
@@ -43,17 +45,17 @@ function Product({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): Re
 
   const handleChecked = (e: FormEvent<HTMLInputElement>) => {
     if (e.currentTarget.checked) {
-      setChecked(true);
       handleProductChecked(product.productId);
     } else {
-      setChecked(false);
       handleProductUnchecked(product.productId);
     }
   };
 
   return (
     <>
-      {isCheckBoxShow && <input type='checkbox' checked={checked} onChange={handleChecked} />}
+      {isCheckBoxShow && (
+        <input type='checkbox' checked={product.checked} onChange={handleChecked} />
+      )}
       <Row className={styles.Wrapper}>
         <Row className={styles.Flex3}>
           <Image src='/image/temp_preset.jpg' alt='product image' width={100} height={130} />
@@ -91,6 +93,7 @@ function Product({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): Re
 
 Product.defaultProps = {
   isCheckBoxShow: false,
+  funcBind: [(presetId: number) => {}, (presetId: number) => {}],
   cartFuncBind: [(presetId: number) => {}, (presetId: number) => {}],
 };
 

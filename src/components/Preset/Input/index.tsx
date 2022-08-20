@@ -21,6 +21,8 @@ const tempProductList: ProductType[] = [
     weight: '400g',
     score: 4.5,
     imagePath: 'hihi',
+    checked: true,
+    count: 1,
   },
   {
     productId: 2,
@@ -31,6 +33,8 @@ const tempProductList: ProductType[] = [
     weight: '200g',
     score: 2.0,
     imagePath: 'hihi',
+    checked: true,
+    count: 1,
   },
   {
     productId: 3,
@@ -41,6 +45,8 @@ const tempProductList: ProductType[] = [
     weight: '200g',
     score: 2.0,
     imagePath: 'hihi',
+    checked: true,
+    count: 1,
   },
 ];
 

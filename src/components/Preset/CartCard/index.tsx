@@ -80,6 +80,7 @@ function PresetCartCard({ originalPreset, funcBind }: props): ReactElement {
         return product;
       }),
     );
+    setChecked(products.some((product) => product.checked));
   };
 
   return (
