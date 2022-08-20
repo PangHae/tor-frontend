@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: tor
+  name: tor-frontend-deploy
+spec:
+  replicas: 1
+  selector:
+       matchLabels:
+            app: tor-frontend
+  template:
+      metadata:
+        labels:
+           app: tor-frontend
+      spec:
+         containers:
+         - name: tor-frontend
+           image: #VERSION_STRING#
+           ports:
+           - name: frontend-port
+             containerPort: 3000
+           imagePullPolicy: IfNotPresent
+           resources:
+             limits:
+               cpu: "2000m"
+               memory: "2048Mi"
+             requests:
+               cpu: "2000m"
+               memory: "2048Mi"
+         volumes:
+         - name: tz-seoul
+           hostPath:
+              path: /usr/share/zoneinfo/Asia/Seoul
