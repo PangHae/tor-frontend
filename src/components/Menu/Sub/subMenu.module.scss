@@ -1,0 +1,12 @@
+.SubMenu {
+  display: flex;
+  height: 60px;
+  line-height: 60px;
+  background-color: rgb(229, 198, 239);
+  & > .SubSearch {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    margin-right: 10%;
+  }
+}

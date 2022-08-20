@@ -1,0 +1,71 @@
+.InputTSX {
+  display: inline-block;
+  width: 300px;
+  height: 40px;
+  padding: 10px 12px;
+  margin: auto;
+  font-size: 14px;
+}
+
+.MainInput {
+  border-radius: 4px;
+  border: 1px solid #2f2f2f;
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: none;
+    border: 1.5px solid rgb(86, 12, 123);
+    border-radius: 4px;
+  }
+}
+
+.ShortInput {
+  width: 216px;
+  border-radius: 4px;
+  border: 1px solid #2f2f2f;
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: none;
+    border: 1.5px solid rgb(86, 12, 123);
+    border-radius: 4px;
+  }
+}
+
+.UnderBarInput {
+  width: 265px;
+  border: none;
+  background: linear-gradient(#2f2f2f, #2f2f2f) center bottom 5px / calc(100% - 10px) 1px no-repeat;
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: none;
+    border: none;
+    background: linear-gradient(rgb(86, 12, 123), rgb(86, 12, 123)) center bottom 5px /
+      calc(100% - 10px) 1.5px no-repeat;
+  }
+}
+
+.PresetCreateInput {
+  width: 400px;
+  padding: 2px 8px;
+  font-size: 20px;
+  border: none;
+  background: linear-gradient(#2f2f2f, #2f2f2f) center bottom 5px / calc(100% - 10px) 1px no-repeat;
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: none;
+    border: none;
+    background: linear-gradient(rgb(86, 12, 123), rgb(86, 12, 123)) center bottom 5px /
+      calc(100% - 10px) 1.5px no-repeat;
+  }
+  margin: unset;
+}
+
+.CheckBox {
+  width: 20px;
+  height: 20px;
+  margin: auto 10px;
+  flex-shrink: 0;
+}

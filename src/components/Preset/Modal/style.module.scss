@@ -1,0 +1,76 @@
+.Background {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  backdrop-filter: saturate(180%);
+  -webkit-backdrop-filter: saturate(180%);
+  background-color: rgba(100, 100, 100, 0.65);
+}
+
+.Modal {
+  position: fixed;
+  display: flex;
+  z-index: 2;
+  padding: 32px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: fit-content;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 50px;
+  border-radius: 25px;
+  background: white;
+  box-shadow: 4px 4px 8px #3a3a3a, -4px -4px 8px #4e4e4e;
+}
+
+.RecommendWrapper {
+  margin-left: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  p {
+    color: #999;
+    font-size: 12px;
+  }
+}
+
+.Producer {
+  margin-bottom: 8px;
+}
+
+.PresetName {
+  font-size: 28px;
+  font-weight: bolder;
+  margin-bottom: 16px;
+}
+
+.ProductList {
+  height: 300px;
+  margin-top: 16px;
+  padding: 8px;
+  border-radius: 2px;
+  border: 1px solid #ddd;
+  overflow-y: scroll;
+}
+
+.TotalRow {
+  padding: 24px 0;
+  justify-content: space-between;
+  .ProductCount {
+    margin-left: 4px;
+    font-weight: bolder;
+  }
+  .ProductTotalPrice {
+    font-size: 24px;
+    font-weight: bolder;
+  }
+}
+.ButtonWrapper {
+  justify-content: space-evenly;
+}

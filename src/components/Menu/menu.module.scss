@@ -1,0 +1,17 @@
+.MenuBar {
+  display: flex;
+  font-size: 20px;
+  margin: 10px;
+  padding: 5px;
+  justify-content: center;
+  & > .MainMenu {
+    display: flex;
+  }
+  & > .Category {
+    display: flex;
+    padding-right: 35px;
+  }
+}
+.ShortMenu {
+  font-size: 16px;
+}

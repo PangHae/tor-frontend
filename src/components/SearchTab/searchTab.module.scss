@@ -1,0 +1,12 @@
+.SearchTab {
+  display: flex;
+  flex-direction: row;
+  & > .SearchWord {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+  }
+  & > .Buttons {
+    margin: auto 0;
+  }
+}
