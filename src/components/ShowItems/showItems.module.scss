@@ -1,0 +1,30 @@
+.ItemField {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  & > .ProductField {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    position: relative;
+
+    & > .ProductCardField {
+      display: grid;
+      grid-template-columns: repeat(4, 184px);
+      column-gap: 25px;
+    }
+
+    & > .LeftButton {
+      position: absolute;
+      top: 124px;
+      left: -45px;
+      margin: auto;
+    }
+    & > .RightButton {
+      position: absolute;
+      left: 811px;
+      top: 124px;
+      margin: auto;
+    }
+  }
+}

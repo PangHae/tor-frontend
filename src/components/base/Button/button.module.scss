@@ -1,0 +1,96 @@
+@mixin modalButton($isLeft) {
+  flex: 1;
+  @if ($isLeft) {
+    margin-right: 4px;
+  }
+  else {
+    margin-left: 4px;
+  }
+}
+
+.ButtonTSX {
+  width: 120px;
+  height: 40px;
+  font-size: 14px;
+  border: none;
+  background-color: rgb(86, 12, 123);
+  color: white;
+  border-radius: 4px;
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    background-color: white;
+    color: rgb(86, 12, 123);
+    border: 2px solid rgb(86, 12, 123);
+  }
+}
+
+.CategoryButton {
+  border-radius: 30px;
+  margin: 5px;
+}
+
+.ImageButton {
+  width: 44px;
+  height: 44px;
+  border: 2px solid white;
+  background-color: white;
+  padding: 0;
+  &:active {
+    border: 2px solid white;
+  }
+}
+
+.SubMenuImageButton {
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgb(229, 198, 239);
+  background-color: rgb(229, 198, 239);
+  padding: 0;
+  margin: auto;
+  &:active {
+    border: 2px solid rgb(229, 198, 239);
+  }
+}
+
+.CartButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  border-radius: 25px;
+}
+
+.CloseModalButton {
+  @include modalButton(true);
+  background-color: #fff;
+  color: #000;
+  border: 1px solid black;
+
+  &:active {
+    color: #fff;
+  }
+}
+
+.AddCartButton {
+  @include modalButton(false);
+}
+
+.ModalProductButton {
+  width: 24px;
+  height: 24px;
+  margin: 0 16px;
+  background: #888;
+}
+
+.PresetCreateButton {
+  margin-left: 10px;
+  width: 60px;
+  height: 40px;
+}
