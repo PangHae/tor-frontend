@@ -35,16 +35,6 @@ function PresetCartCard({ originalPreset, funcBind }: props): ReactElement {
     }
   };
 
-  const handleProductChange = (e: FormEvent<HTMLInputElement>) => {
-    if (e.currentTarget.checked) {
-      setChecked(true);
-      handlePresetAdd(originalPreset.presetId);
-    } else {
-      setChecked(false);
-      handlePresetRemove(originalPreset.presetId);
-    }
-  };
-
   const handleProductAdd = (productId: number) => {
     setProducts(
       [...products].map((product) => {
