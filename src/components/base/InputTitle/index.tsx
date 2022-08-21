@@ -1,6 +1,6 @@
 import React from 'react';
 import Input from '../Input';
-import Title from '../Title';
+import { Title } from '../Title';
 import styles from './inputTitle.module.scss';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {

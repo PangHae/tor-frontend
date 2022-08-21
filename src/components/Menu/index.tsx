@@ -1,6 +1,6 @@
 import React from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import Title from 'src/components/base/Title';
+import { LinkedTitle, Title } from 'src/components/base/Title';
 import cx from 'classnames';
 import styles from './menu.module.scss';
 
@@ -14,7 +14,7 @@ function Menu({ classname }: Props): React.ReactElement {
     <div className={cx(styles.MenuBar, classname && styles[classname])}>
       <div className={styles.Category}>
         <GiHamburgerMenu size={30} style={{ margin: 'auto 0' }} />
-        <Title text='카테고리' />
+        <LinkedTitle classname='TitleHover' text='카테고리' />
       </div>
       <div className={styles.MainMenu}>
         {menuArray.map((name) => {

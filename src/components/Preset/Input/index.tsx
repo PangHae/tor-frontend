@@ -1,11 +1,9 @@
 import { ChangeEvent, ReactElement, useState } from 'react';
 import Button from 'src/components/base/Button';
-// import Button from 'src/components/base/Button';
-// import Input from 'src/components/base/Input';
 import InputTitle from 'src/components/base/InputTitle';
-import Title from 'src/components/base/Title';
+import { Title } from 'src/components/base/Title';
 import CategoryModal from 'src/components/Category/Modal';
-import Product from 'src/components/Product';
+import ProductPreset from 'src/components/Product/Preset';
 import { ProductType } from 'src/types';
 
 import styles from './style.module.scss';
@@ -67,7 +65,9 @@ function PresetInput(): ReactElement {
         <hr style={{ margin: '0', marginBottom: '10px' }} />
         <div className={styles.Select}>
           <div className={styles.SelectCategory}>
-            <div onClick={handleCategoryModalOpen}>{'카테고리 선택 >'}</div>
+            <div className={styles.SelectCategoryTitle} onClick={handleCategoryModalOpen}>
+              {'카테고리 선택 >'}
+            </div>
             {presetCategoryList.map((categoryName) => {
               return (
                 <div className={styles.CategoryBox} onClick={handleClickCategory}>
@@ -78,9 +78,20 @@ function PresetInput(): ReactElement {
           </div>
           <hr />
           <div className={styles.SelectItem}>
-            {productArr.map((product) => (
-              <Product product={product} />
-            ))}
+            {productArr.length === 0 ? (
+              presetCategoryList.length === 0 ? (
+                '선택한 카테고리가 없습니다'
+              ) : (
+                '상품이 존재하지 않습니다'
+              )
+            ) : (
+              <>
+                <Title text='상품 선택' />
+                {productArr.map((product) => (
+                  <ProductPreset product={product} />
+                ))}
+              </>
+            )}
           </div>
         </div>
         <Button onClick={handleClickSave}>저장</Button>

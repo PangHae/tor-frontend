@@ -16,6 +16,11 @@
       & > .SelectCategory {
         flex: 1;
         padding: 10px;
+        & > .SelectCategoryTitle:hover {
+          color: rgb(86, 12, 123);
+          text-decoration: underline;
+          cursor: pointer;
+        }
         & > .CategoryBox {
           font-size: 18px;
           text-align: center;
@@ -23,6 +28,9 @@
           margin: 10px;
           line-height: 40px;
           border: 1px solid black;
+          &:hover {
+            cursor: pointer;
+          }
         }
       }
       & > .SelectItem {

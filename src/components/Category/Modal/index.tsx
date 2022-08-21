@@ -2,7 +2,7 @@ import React, { ChangeEvent, ReactElement, SetStateAction, useState } from 'reac
 import Button from 'src/components/base/Button';
 import InputTitle from 'src/components/base/InputTitle';
 import { IoSearchSharp } from 'react-icons/io5';
-import Title from 'src/components/base/Title';
+import { Title } from 'src/components/base/Title';
 
 import styles from './style.module.scss';
 

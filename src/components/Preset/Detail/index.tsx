@@ -2,7 +2,7 @@ import React from 'react';
 import ProductType from 'src/types/product';
 import Image from 'next/image';
 import cx from 'classnames';
-import Product from 'src/components/Product';
+import ProductCart from 'src/components/Product/Cart';
 import Input from 'src/components/base/Input';
 import ShowItems from 'src/components/ShowItems';
 import Button from 'src/components/base/Button';
@@ -50,7 +50,7 @@ function PresetDetail({ products }: Props): React.ReactElement {
             return (
               <div className={styles.ProductCheck}>
                 <Input classname='CheckBox' type='checkbox' />
-                <Product product={product} />
+                <ProductCart product={product} />
               </div>
             );
           })}

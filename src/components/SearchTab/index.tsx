@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import Input from 'src/components/base/Input';
-import Title from 'src/components/base/Title';
+import { LinkedTitle } from 'src/components/base/Title';
 import Button from 'src/components/base/Button';
 import { IoCartSharp, IoLocationSharp, IoSearchSharp } from 'react-icons/io5';
 import { AiFillHeart } from 'react-icons/ai';
@@ -21,7 +21,7 @@ function SearchTab({ noTitle }: Props): React.ReactElement {
 
   return (
     <div className={styles.SearchTab}>
-      {noTitle || <Title text='추천컬리' style={{ fontSize: '32px', fontWeight: 'bold' }} />}
+      {noTitle || <LinkedTitle text='추천컬리' style={{ fontSize: '32px', fontWeight: 'bold' }} />}
       <div className={styles.SearchWord}>
         <Input
           classname='MainInput'
