@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Title from 'src/components/base/Title';
+import { Title } from 'src/components/base/Title';
 import PresetCard from 'src/components/Preset/Card';
 import PresetModal from 'src/components/Preset/Modal';
 import { IoIosArrowDropleft, IoIosArrowDropright } from 'react-icons/io';
