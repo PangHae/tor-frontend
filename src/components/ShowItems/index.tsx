@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Title } from 'src/components/base/Title';
 import PresetCard from 'src/components/Preset/Card';
 import PresetModal from 'src/components/Preset/Modal';
@@ -9,168 +9,21 @@ import Button from '../base/Button';
 
 interface ShowItemProps {
   tabTitle: string;
+  presetRanking: PresetType[];
 }
 
-const tempPresetList: PresetType[] = [
-  {
-    presetId: 0,
-    presetName: '야 너두 집밥 뚝딱',
-    presetContent:
-      '집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ',
-    categoryName: 'category1',
-    recommend: 24,
-    producer: '응호애현',
-    products: [
-      {
-        productId: 1,
-        productName: '갈비탕',
-        category: 'korean',
-        company: '사미헌',
-        price: 12000,
-        weight: '400g',
-        score: 4.5,
-        imagePath: 'hihi',
-        checked: true,
-        count: 1,
-      },
-      {
-        productId: 2,
-        productName: '깍둑이',
-        category: 'korean',
-        company: '사미헌',
-        price: 7500,
-        weight: '200g',
-        score: 2.0,
-        imagePath: 'hihi',
-        checked: true,
-        count: 1,
-      },
-    ],
-  },
-  {
-    presetId: 1,
-    presetName:
-      '가성비충 꼭 봐주면 돼.. 가성비충 꼭 봐주면 돼.. 가성비충 꼭 봐주면 돼.. 가성비충 꼭 봐주면 돼..',
-    presetContent:
-      '가성비 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ',
-    categoryName: 'category1',
-    recommend: 1024,
-    producer: '응준애호',
-    products: [
-      {
-        productId: 1,
-        productName: '갈비탕',
-        category: 'korean',
-        company: '사미헌',
-        price: 12000,
-        weight: '400g',
-        score: 4.5,
-        imagePath: 'hihi',
-        checked: true,
-        count: 1,
-      },
-      {
-        productId: 2,
-        productName: '깍둑이',
-        category: 'korean',
-        company: '사미헌',
-        price: 7500,
-        weight: '200g',
-        score: 2.0,
-        imagePath: 'hihi',
-        checked: true,
-        count: 1,
-      },
-    ],
-  },
-  {
-    presetId: 2,
-    presetName: '오분 완성 연애 요리',
-    presetContent:
-      '오븐 완성 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ',
-    categoryName: 'category1',
-    recommend: 10000,
-    producer: '응범애석',
-    products: [
-      {
-        productId: 1,
-        productName: '갈비탕',
-        category: 'korean',
-        company: '사미헌',
-        price: 12000,
-        weight: '400g',
-        score: 4.5,
-        imagePath: 'hihi',
-        checked: true,
-        count: 1,
-      },
-      {
-        productId: 2,
-        productName: '깍둑이',
-        category: 'korean',
-        company: '사미헌',
-        price: 7500,
-        weight: '200g',
-        score: 2.0,
-        imagePath: 'hihi',
-        checked: true,
-        count: 1,
-      },
-    ],
-  },
-  {
-    presetId: 3,
-    presetName: '근데 파르페가 뭐임',
-    presetContent:
-      '파르페 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ 집밥 냠냠냠냔ㅁ',
-    categoryName: 'category1',
-    recommend: 10,
-    producer: '이광해 바보',
-    products: [
-      {
-        productId: 1,
-        productName: '갈비탕',
-        category: 'korean',
-        company: '사미헌',
-        price: 12000,
-        weight: '400g',
-        score: 4.5,
-        imagePath: 'hihi',
-        checked: true,
-        count: 1,
-      },
-      {
-        productId: 2,
-        productName: '깍둑이',
-        category: 'korean',
-        company: '사미헌',
-        price: 7500,
-        weight: '200g',
-        score: 2.0,
-        imagePath: 'hihi',
-        checked: true,
-        count: 1,
-      },
-      {
-        productId: 3,
-        productName: 'gasdgasgdas',
-        category: 'korean',
-        company: '사미헌',
-        price: 13000,
-        weight: '200g',
-        score: 1.0,
-        imagePath: 'hihi',
-        checked: true,
-        count: 1,
-      },
-    ],
-  },
-];
-
-function ShowItems({ tabTitle }: ShowItemProps): React.ReactElement {
+function ShowItems({ tabTitle, presetRanking }: ShowItemProps): React.ReactElement {
   // 여기서 items list 서버에서 받아오도록 함
   const [isCartModalShow, setIsCartModalShow] = useState<boolean>(false);
   const [presetForModal, setPresetForModal] = useState<PresetType | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [presetToShow, setPresetToShow] = useState<PresetType[]>([]);
+
+  useEffect(() => {
+    const curPreset = presetRanking.slice(currentPage * 4, currentPage * 4 + 4);
+    setPresetToShow(curPreset);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   const handleShowCartModal = (preset: PresetType) => {
     setIsCartModalShow(true);
@@ -181,18 +34,27 @@ function ShowItems({ tabTitle }: ShowItemProps): React.ReactElement {
     setPresetForModal(null);
   };
 
+  const handleClickLeft = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handleClickRight = () => {
+    setCurrentPage(currentPage + 1);
+  };
   return (
     <>
       <div className={styles.ItemField}>
         <Title classname='TitleHover' text={tabTitle} style={{ fontSize: '24px' }} />
         <div className={styles.ProductField}>
-          <div className={styles.LeftButton}>
-            <Button classname='ImageButton'>
-              <IoIosArrowDropleft size={40} color='#000' />
-            </Button>
-          </div>
+          {currentPage !== 0 ? (
+            <div className={styles.LeftButton}>
+              <Button classname='ImageButton' onClick={handleClickLeft}>
+                <IoIosArrowDropleft size={40} color='#000' />
+              </Button>
+            </div>
+          ) : null}
           <div className={styles.ProductCardField}>
-            {tempPresetList.map((preset) => {
+            {presetToShow.map((preset) => {
               return (
                 <PresetCard
                   key={preset.presetId} // 이거 나중에 preset id 값으로 바꿀건데 임시로 지정 넣어놓은 값
@@ -202,11 +64,13 @@ function ShowItems({ tabTitle }: ShowItemProps): React.ReactElement {
               );
             })}
           </div>
-          <div className={styles.RightButton}>
-            <Button classname='ImageButton'>
-              <IoIosArrowDropright size={40} color='#000' />
-            </Button>{' '}
-          </div>
+          {currentPage !== 4 ? (
+            <div className={styles.RightButton}>
+              <Button classname='ImageButton' onClick={handleClickRight}>
+                <IoIosArrowDropright size={40} color='#000' />
+              </Button>
+            </div>
+          ) : null}
         </div>
       </div>
       {isCartModalShow && <PresetModal preset={presetForModal!} onClose={handleCloseCartModal} />}
