@@ -18,9 +18,11 @@ function ShowItems({ tabTitle, presetRanking }: ShowItemProps): React.ReactEleme
   const [presetForModal, setPresetForModal] = useState<PresetType | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [presetToShow, setPresetToShow] = useState<PresetType[]>([]);
+  const [lastPage, setLastPage] = useState(0);
 
   useEffect(() => {
     const curPreset = presetRanking.slice(currentPage * 4, currentPage * 4 + 4);
+    setLastPage(Math.ceil(presetRanking.length / 4) - 1);
     setPresetToShow(curPreset);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
@@ -45,33 +47,37 @@ function ShowItems({ tabTitle, presetRanking }: ShowItemProps): React.ReactEleme
     <>
       <div className={styles.ItemField}>
         <Title classname='TitleHover' text={tabTitle} style={{ fontSize: '24px' }} />
-        <div className={styles.ProductField}>
-          {currentPage !== 0 ? (
-            <div className={styles.LeftButton}>
-              <Button classname='ImageButton' onClick={handleClickLeft}>
-                <IoIosArrowDropleft size={40} color='#000' />
-              </Button>
+        {lastPage < 0 ? (
+          <Title text='개인 추천 사항이 없습니다..' />
+        ) : (
+          <div className={styles.ProductField}>
+            {currentPage !== 0 ? (
+              <div className={styles.LeftButton}>
+                <Button classname='ImageButton' onClick={handleClickLeft}>
+                  <IoIosArrowDropleft size={40} color='#000' />
+                </Button>
+              </div>
+            ) : null}
+            <div className={styles.ProductCardField}>
+              {presetToShow.map((preset) => {
+                return (
+                  <PresetCard
+                    key={preset.presetId}
+                    preset={preset}
+                    onClickCart={() => handleShowCartModal(preset)}
+                  />
+                );
+              })}
             </div>
-          ) : null}
-          <div className={styles.ProductCardField}>
-            {presetToShow.map((preset) => {
-              return (
-                <PresetCard
-                  key={preset.presetId} // 이거 나중에 preset id 값으로 바꿀건데 임시로 지정 넣어놓은 값
-                  preset={preset}
-                  onClickCart={handleShowCartModal}
-                />
-              );
-            })}
+            {currentPage !== lastPage ? (
+              <div className={styles.RightButton}>
+                <Button classname='ImageButton' onClick={handleClickRight}>
+                  <IoIosArrowDropright size={40} color='#000' />
+                </Button>
+              </div>
+            ) : null}
           </div>
-          {currentPage !== 4 ? (
-            <div className={styles.RightButton}>
-              <Button classname='ImageButton' onClick={handleClickRight}>
-                <IoIosArrowDropright size={40} color='#000' />
-              </Button>
-            </div>
-          ) : null}
-        </div>
+        )}
       </div>
       {isCartModalShow && <PresetModal preset={presetForModal!} onClose={handleCloseCartModal} />}
     </>
