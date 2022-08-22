@@ -3,20 +3,13 @@ import { PresetType, ProductType } from 'src/types';
 import axios from 'axios';
 import ShortMenu from 'src/components/Menu/Short';
 import PresetDetail from 'src/components/Preset/Detail';
-import { useEffect } from 'react';
 
 interface Props {
-  preset: {
-    content: ProductType[];
-  };
+  preset: ProductType[];
   presetInfo: PresetType;
 }
 
 function PresetName({ preset, presetInfo }: Props) {
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <>
       <Head>
