@@ -27,7 +27,7 @@ function PresetDetail({ products, presetInfo }: Props): React.ReactElement {
     setTotalPrice(initPrice);
     setProductList(products);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [products]);
 
   useEffect(() => {
     if (productList) {
