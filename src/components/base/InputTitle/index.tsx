@@ -16,6 +16,7 @@ function InputTitle({
   title,
   placeholder,
   inputMaxLen,
+  value,
   onChange,
 }: Props) {
   return (
@@ -25,6 +26,7 @@ function InputTitle({
         classname={inputClassname}
         placeholder={placeholder}
         maxLength={inputMaxLen}
+        value={value}
         onChange={onChange}
       />
     </div>

@@ -50,6 +50,7 @@ function PresetInput(): ReactElement {
           inputClassname='LongInput'
           title='모음집 이름'
           placeholder='모음집 이름을 입력해주세요'
+          value={presetName}
           onChange={handleChangePresetName}
         />
         <InputTitle
@@ -57,6 +58,7 @@ function PresetInput(): ReactElement {
           title='설명'
           placeholder='만든 모음집을 설명해주세요. 설명은 300자로 제한됩니다.'
           inputMaxLen={300}
+          value={presetDescription}
           onChange={handleChangePresetDescript}
         />
       </div>
