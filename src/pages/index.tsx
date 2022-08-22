@@ -10,10 +10,17 @@ interface Props {
   presetRanking: {
     content: PresetType[];
   };
+  userPresetRanking: {
+    content: PresetType[];
+  };
 }
 
-function Home({ presetRanking }: Props) {
-  const tabNames = ['지금 가장 핫한 모음집 >', '이 모음집 어때요? >'];
+function Home({ presetRanking, userPresetRanking }: Props) {
+  const tabs = [
+    { tabName: '지금 가장 핫한 모음집 >', presetRanking },
+    { tabName: '이 모음집 어때요? >', presetRanking: userPresetRanking },
+  ];
+
   return (
     <>
       <Head>
@@ -22,9 +29,9 @@ function Home({ presetRanking }: Props) {
       <main>
         <SearchTab />
         <Menu />
-        <SubMenu categoryList={['이호현', '이준호', '한범석', '모두', '하하']} />
-        {tabNames.map((tabName) => (
-          <ShowItems tabTitle={tabName} presetRanking={presetRanking.content} />
+        <SubMenu />
+        {tabs.map((tab) => (
+          <ShowItems tabTitle={tab.tabName} presetRanking={tab.presetRanking.content} />
         ))}
       </main>
     </>
@@ -33,10 +40,15 @@ function Home({ presetRanking }: Props) {
 
 export const getServerSideProps = async () => {
   const presetRanking = await axios.get(`${process.env.NEXT_PUBLIC_ADDR}/api/preset/getPresetRank`);
-  // 개인 추천 api 연결
-  // category 목록 api 연결
+  const userPresetRanking = await axios.get(
+    `${process.env.NEXT_PUBLIC_ADDR}/api/recommend/getUserRecommendPreset/2`,
+  );
+  // 카테고리 api 연결 필요
   return {
-    props: { presetRanking: presetRanking.data },
+    props: {
+      presetRanking: presetRanking.data,
+      userPresetRanking: userPresetRanking.data,
+    },
   };
 };
 
