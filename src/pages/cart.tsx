@@ -14,7 +14,7 @@ const Cart: NextPage = function Cart() {
       <main>
         <SearchTab />
         <Menu />
-        <SubMenu categoryList={[]} />
+        <SubMenu />
         <CartList />
       </main>
     </>
