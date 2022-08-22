@@ -26,6 +26,8 @@ function CategoryModal({
   const handleClickSearch = () => {
     if (categories.includes(searchCategory)) {
       setButtonTag(searchCategory);
+    } else {
+      setButtonTag('');
     }
   };
 
@@ -55,10 +57,12 @@ function CategoryModal({
             <IoSearchSharp width={40} height={40} color='#000' />
           </Button>
         </div>
-        {buttonTag && (
+        {buttonTag ? (
           <Button classname='CategoryButton' onClick={handleOnClickAddCategory}>
             {buttonTag}
           </Button>
+        ) : (
+          <Title text='일치하는 카테고리가 없습니다' />
         )}
       </div>
     </>

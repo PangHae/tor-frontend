@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { MouseEventHandler, SetStateAction } from 'react';
 import Button from 'src/components/base/Button';
+
 import styles from './list.module.scss';
 
-const tmpCategoryList = ['자취', '반려동물', '한범석', '호몬스터'];
+interface Props {
+  categoryList: string[];
+  setCategory?: React.Dispatch<SetStateAction<string>>;
+}
 
-function CategoryList(): React.ReactElement {
+function CategoryList({ categoryList, setCategory }: Props): React.ReactElement {
+  const handleOnClickCategory: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const { target } = e;
+    if (setCategory) {
+      setCategory((target as HTMLButtonElement).innerText);
+    }
+  };
+
   return (
     <div className={styles.Category}>
       <div className={styles.CategoryButtonField}>
-        {tmpCategoryList.map((categoryName) => {
+        {categoryList.map((categoryName) => {
           return (
-            <Button classname='CategoryButton'>
+            <Button classname='CategoryButton' onClick={handleOnClickCategory}>
               <p>{categoryName}</p>
             </Button>
           );
@@ -19,5 +30,9 @@ function CategoryList(): React.ReactElement {
     </div>
   );
 }
+
+CategoryList.defaultProps = {
+  setCategory: undefined,
+};
 
 export default CategoryList;

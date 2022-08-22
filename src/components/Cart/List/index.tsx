@@ -4,7 +4,7 @@ import Column from 'src/components/base/Column';
 import Row from 'src/components/base/Row';
 import CartBottomModal from 'src/components/CartBottomModal';
 import PresetCartCard from 'src/components/Preset/CartCard';
-import ShowItems from 'src/components/ShowItems';
+// import ShowItems from 'src/components/ShowItems';
 
 import { PresetType } from 'src/types';
 
@@ -231,8 +231,8 @@ function CartList(): ReactElement {
           funcBind={[handlePresetAdd, handlePresetRemove, handleTotalPriceAdd, handleTotalPriceSub]}
         />
       ))}
-      <ShowItems tabTitle='이 모음집 구매자들이 구매한 모음집 >' />
-      <ShowItems tabTitle='이 모음집과 비슷한 모음집 >' />
+      {/* <ShowItems tabTitle='이 모음집 구매자들이 구매한 모음집 >' />
+      <ShowItems tabTitle='이 모음집과 비슷한 모음집 >' /> */}
       <div className={styles.Horizontal} />
       <Row className={styles.PriceWrapper}>
         <Row>
