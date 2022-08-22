@@ -3,7 +3,6 @@ import ShowItems from 'src/components/ShowItems';
 import Menu from 'src/components/Menu';
 import SubMenu from 'src/components/Menu/Sub';
 import SearchTab from 'src/components/SearchTab';
-import CategoryList from 'src/components/Category/List';
 import axios from 'axios';
 import { PresetType } from 'src/types';
 
@@ -23,8 +22,7 @@ function Home({ presetRanking }: Props) {
       <main>
         <SearchTab />
         <Menu />
-        <SubMenu />
-        <CategoryList />
+        <SubMenu categoryList={['이호현', '이준호', '한범석', '모두', '하하']} />
         {tabNames.map((tabName) => (
           <ShowItems tabTitle={tabName} presetRanking={presetRanking.content} />
         ))}
@@ -35,7 +33,8 @@ function Home({ presetRanking }: Props) {
 
 export const getServerSideProps = async () => {
   const presetRanking = await axios.get(`${process.env.NEXT_PUBLIC_ADDR}/api/preset/getPresetRank`);
-  // 다른 api 하나 더 열리면 추가 예정
+  // 개인 추천 api 연결
+  // category 목록 api 연결
   return {
     props: { presetRanking: presetRanking.data },
   };
