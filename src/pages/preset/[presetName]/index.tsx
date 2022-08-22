@@ -1,26 +1,24 @@
 import Head from 'next/head';
-import { ProductType } from 'src/types';
+import { PresetType, ProductType } from 'src/types';
 import axios from 'axios';
 import ShortMenu from 'src/components/Menu/Short';
 import PresetDetail from 'src/components/Preset/Detail';
 
 interface Props {
-  presetName: string;
-  preset: {
-    content: ProductType[];
-  };
+  preset: ProductType[];
+  presetInfo: PresetType;
 }
 
-function PresetName({ presetName, preset }: Props) {
+function PresetName({ preset, presetInfo }: Props) {
   return (
     <>
       <Head>
-        <title>{presetName}</title>
+        <title>{presetInfo.presetName}</title>
       </Head>
       <main>
         <ShortMenu />
         <hr style={{ margin: '0', marginBottom: '10px' }} />
-        <PresetDetail products={preset.content} />
+        <PresetDetail products={preset} presetInfo={presetInfo} />
       </main>
     </>
   );
@@ -31,8 +29,17 @@ export const getServerSideProps = async (context: any) => {
   const presetRes = await axios.get(
     `${process.env.NEXT_PUBLIC_ADDR}/api/product/getProductList/${encodeURI(presetName)}`,
   );
+  const presetInfoRes = await axios.get(
+    `${process.env.NEXT_PUBLIC_ADDR}/api/preset/getPreset/${encodeURI(presetName)}`,
+  );
+  const checkAddedProducts: ProductType[] = presetRes.data.content.map((product: ProductType) => {
+    product.checked = true;
+    product.count = 1;
+    return product;
+  });
+
   return {
-    props: { presetName, preset: presetRes.data },
+    props: { preset: checkAddedProducts, presetInfo: presetInfoRes.data },
   };
 };
 

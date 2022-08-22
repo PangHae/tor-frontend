@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { BsHeartFill } from 'react-icons/bs';
 
-import Product from 'src/components/Product';
+import ProductCart from 'src/components/Product/Cart';
 import Column from 'src/components/base/Column/index';
 import Row from 'src/components/base/Row';
 import Button from 'src/components/base/Button';
@@ -72,7 +72,7 @@ function PresetModal({ preset, onClose }: props): ReactElement {
         </Column>
         <div className={styles.ProductList}>
           {preset.products!.map((product) => (
-            <Product
+            <ProductCart
               key={product.productId}
               funcBind={[handleTotalPriceAdd, handleTotalPriceSub]}
               product={product}

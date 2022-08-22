@@ -3,7 +3,7 @@ import { ReactElement, useState, FormEvent } from 'react';
 import cx from 'classnames';
 
 import Column from 'src/components/base/Column';
-import Product from 'src/components/Product';
+import ProductCart from 'src/components/Product/Cart';
 
 import { PresetType, ProductType } from 'src/types';
 
@@ -100,7 +100,7 @@ function PresetCartCard({ originalPreset, funcBind }: props): ReactElement {
           className={cx(styles.ProductWrapper, !product.checked && styles.Checked)}
           key={product.productId}
         >
-          <Product
+          <ProductCart
             product={product}
             funcBind={[handleProductAdd, handleProductSub]}
             cartFuncBind={[handleProductChecked, handleProductUnchecked]}

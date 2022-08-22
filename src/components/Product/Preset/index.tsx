@@ -2,15 +2,13 @@
 import { FormEvent, ReactElement, useState } from 'react';
 import Image from 'next/image';
 import { GiRoundStar } from 'react-icons/gi';
-import cx from 'classnames';
 
 import Row from 'src/components/base/Row';
 import Column from 'src/components/base/Column';
-import Button from 'src/components/base/Button';
 
 import { ProductType } from 'src/types';
 
-import styles from './style.module.scss';
+import styles from '../style.module.scss';
 
 interface props {
   product: ProductType;
@@ -19,7 +17,7 @@ interface props {
   isCheckBoxShow?: boolean;
 }
 
-function Product({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): ReactElement {
+function ProductPreset({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): ReactElement {
   const [onTotalPriceAdd, onTotalPriceSub] = funcBind || [
     (presetId: number) => {},
     (presetId: number) => {},
@@ -30,18 +28,6 @@ function Product({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): Re
   ];
   const [price, setPrice] = useState(product.price);
   const [count, setCount] = useState(product.count);
-  const handleAdd = () => {
-    setPrice(price + product.price);
-    setCount(count + 1);
-    onTotalPriceAdd(product.productId);
-  };
-  const handleSub = () => {
-    if (count > 0) {
-      setPrice(price - product.price);
-      setCount(count - 1);
-      onTotalPriceSub(product.productId);
-    }
-  };
 
   const handleChecked = (e: FormEvent<HTMLInputElement>) => {
     if (e.currentTarget.checked) {
@@ -74,15 +60,6 @@ function Product({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): Re
             </Row>
           </Column>
         </Row>
-        <Row className={cx(styles.Flex1, styles.ButtonWrapper)}>
-          <Button classname='ModalProductButton' onClick={handleSub}>
-            -
-          </Button>
-          <p>{count}</p>
-          <Button classname='ModalProductButton' onClick={handleAdd}>
-            +
-          </Button>
-        </Row>
         <Row className={styles.Flex1}>
           <p>{`${price.toLocaleString()}원`}</p>
         </Row>
@@ -91,10 +68,10 @@ function Product({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): Re
   );
 }
 
-Product.defaultProps = {
+ProductPreset.defaultProps = {
   isCheckBoxShow: false,
   funcBind: [(presetId: number) => {}, (presetId: number) => {}],
   cartFuncBind: [(presetId: number) => {}, (presetId: number) => {}],
 };
 
-export default Product;
+export default ProductPreset;

@@ -1,5 +1,6 @@
 .SearchTab {
   display: flex;
+  flex: 1;
   flex-direction: row;
   & > .SearchWord {
     display: flex;
