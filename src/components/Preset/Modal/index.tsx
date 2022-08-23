@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import { BsHeartFill } from 'react-icons/bs';
 
 import ProductCart from 'src/components/Product/Cart';
@@ -8,6 +8,8 @@ import Button from 'src/components/base/Button';
 
 import { PresetType, ProductType } from 'src/types';
 
+import useAxios from 'src/hooks/useAxios';
+
 import styles from './style.module.scss';
 
 interface props {
@@ -16,16 +18,38 @@ interface props {
 }
 
 function PresetModal({ preset, onClose }: props): ReactElement {
-  const [cartProducts, setCartProducts] = useState<ProductType[]>(
-    preset.products!.map((product) => {
-      return { ...product };
-    }),
-  );
-  const [totalPrice, setTotalPrice] = useState(
-    preset.products!.reduce((priceSum, product) => priceSum + product.price, 0),
-  );
+  const { fetchData: getProducts, res: productData } = useAxios({
+    method: 'get',
+    url: `/api/product/getProductList/`,
+  });
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [cartProducts, setCartProducts] = useState<ProductType[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getProducts(preset.presetName);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (productData) {
+      setTotalPrice(
+        productData.content.reduce(
+          (priceSum: number, product: ProductType) => priceSum + product.price,
+          0,
+        ),
+      );
+      setCartProducts(
+        productData.content.map((product: ProductType) => {
+          return { ...product };
+        }),
+      );
+      setLoading(true);
+    }
+  }, [productData]);
 
   const handleTotalPriceAdd = (productID: number) => {
+    console.log(cartProducts);
     setCartProducts(
       cartProducts.map((product) => {
         if (product.productId === productID) {
@@ -43,6 +67,7 @@ function PresetModal({ preset, onClose }: props): ReactElement {
         if (product.productId === productID) {
           product.count -= 1;
           setTotalPrice(totalPrice - product.price);
+          console.log(totalPrice);
         }
         return product;
       }),
@@ -70,23 +95,27 @@ function PresetModal({ preset, onClose }: props): ReactElement {
           </Row>
           <p>{preset.presetContent}</p>
         </Column>
-        <div className={styles.ProductList}>
-          {preset.products!.map((product) => (
-            <ProductCart
-              key={product.productId}
-              funcBind={[handleTotalPriceAdd, handleTotalPriceSub]}
-              product={product}
-            />
-          ))}
-        </div>
-        <Row className={styles.TotalRow}>
-          <Row className={styles.TotalCountWrapper}>
-            <p>총</p>
-            <p className={styles.ProductCount}>{preset.products!.length}</p>
-            <p>개 상품</p>
-          </Row>
-          <p className={styles.ProductTotalPrice}>{` ${totalPrice} 원`}</p>
-        </Row>
+        {loading && (
+          <>
+            <div className={styles.ProductList}>
+              {productData.content.map((product: ProductType) => (
+                <ProductCart
+                  key={product.productId}
+                  funcBind={[handleTotalPriceAdd, handleTotalPriceSub]}
+                  product={product}
+                />
+              ))}
+            </div>
+            <Row className={styles.TotalRow}>
+              <Row className={styles.TotalCountWrapper}>
+                <p>총</p>
+                <p className={styles.ProductCount}>{productData.content.length}</p>
+                <p>개 상품</p>
+              </Row>
+              <p className={styles.ProductTotalPrice}>{` ${totalPrice} 원`}</p>
+            </Row>
+          </>
+        )}
         <Row className={styles.ButtonWrapper}>
           <Button classname='CloseModalButton' onClick={handleClose}>
             취소

@@ -10,7 +10,7 @@ import Button from 'src/components/base/Button';
 
 import { ProductType } from 'src/types';
 
-import styles from '../style.module.scss';
+import styles from './style.module.scss';
 
 interface props {
   product: ProductType;
@@ -29,7 +29,7 @@ function ProductCart({ product, funcBind, cartFuncBind, isCheckBoxShow }: props)
     (presetId: number) => {},
   ];
   const [price, setPrice] = useState(product.price);
-  const [count, setCount] = useState(product.count);
+  const [count, setCount] = useState(1);
   const handleAdd = () => {
     setPrice(price + product.price);
     setCount(count + 1);
@@ -65,7 +65,11 @@ function ProductCart({ product, funcBind, cartFuncBind, isCheckBoxShow }: props)
               <p>{product.productName}</p>
             </Row>
             <Row className={styles.Content}>
-              <p>{product.weight}</p>
+              <p>
+                {+product.weight / 1000 < 1
+                  ? `${product.weight} g`
+                  : `${+product.weight / 1000} kg`}
+              </p>
               <p>{product.category}</p>
               <Row className={styles.ScoreWrapper}>
                 <GiRoundStar color='#FFDC46' size={14} />
