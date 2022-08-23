@@ -99,7 +99,6 @@ function PresetModal({ preset, onClose }: props): ReactElement {
     });
     onClose();
   };
-
   return (
     <>
       <div className={styles.Background} onClick={onClose} />

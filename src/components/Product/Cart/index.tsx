@@ -44,6 +44,7 @@ function ProductCart({
   const handleChecked = () => {
     onProductCheck!(product.productId, !product.checked);
   };
+
   return (
     <Row
       className={cx(

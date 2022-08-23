@@ -139,7 +139,6 @@ function CartList(): ReactElement {
           items[product.productId.toString()] = product.count;
         }
       });
-      console.log(items);
       const requestData = {
         userId: 'cotton',
         presetId: preset.presetId,
