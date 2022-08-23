@@ -1,10 +1,11 @@
-import { ChangeEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import Button from 'src/components/base/Button';
 import InputTitle from 'src/components/base/InputTitle';
 import { Title } from 'src/components/base/Title';
 import CategoryModal from 'src/components/Category/Modal';
 import ProductPreset from 'src/components/Product/Preset';
-import { ProductType } from 'src/types';
+import useAxios from 'src/hooks/useAxios';
+import { CategoryNProduct, ProductType } from 'src/types';
 
 import styles from './style.module.scss';
 
@@ -13,7 +14,21 @@ function PresetInput(): ReactElement {
   const [productArr, setProductArr] = useState<ProductType[]>([]);
   const [presetDescription, setPresetDescription] = useState('');
   const [isCategoryModalShow, setIsCategoryModalShow] = useState(false);
-  const [presetCategoryList, setPresetCatergoryList] = useState<string[]>([]);
+  const [presetCategoryList, setPresetCatergoryList] = useState<CategoryNProduct>({
+    categoryName: [],
+    product: [],
+  });
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const { fetchData: getProductList, res: getProductListRes } = useAxios({
+    method: 'get',
+    url: '/api/product/getProductLists',
+  });
+
+  useEffect(() => {
+    if (getProductListRes) {
+      setProductArr(getProductListRes.content);
+    }
+  }, [getProductListRes]);
 
   const handleCategoryModalClose = () => {
     setIsCategoryModalShow(false);
@@ -22,9 +37,10 @@ function PresetInput(): ReactElement {
     setIsCategoryModalShow(true);
   };
 
-  const handleClickCategory = () => {
+  const handleClickCategory = (categoryName: string, index: number) => {
     // 클릭해서 카테고리 안에 상품들 조회해서 보여줌.
-    setProductArr([]);
+    setCurrentIndex(index);
+    getProductList(`/${encodeURI(categoryName)}`);
   };
 
   const handleChangePresetName = (e: ChangeEvent) => {
@@ -35,6 +51,15 @@ function PresetInput(): ReactElement {
   const handleChangePresetDescript = (e: ChangeEvent) => {
     const { target } = e;
     setPresetDescription((target as HTMLInputElement).value);
+  };
+
+  const handleOnclickProduct = (product: ProductType) => {
+    const tmpProductList = [...presetCategoryList.product];
+    tmpProductList[currentIndex] = product;
+    setPresetCatergoryList({
+      categoryName: [...presetCategoryList.categoryName],
+      product: tmpProductList,
+    });
   };
 
   const handleClickSave = () => {
@@ -70,10 +95,17 @@ function PresetInput(): ReactElement {
             <div className={styles.SelectCategoryTitle} onClick={handleCategoryModalOpen}>
               {'카테고리 선택 >'}
             </div>
-            {presetCategoryList.map((categoryName) => {
+            {presetCategoryList?.categoryName.map((categoryName, index) => {
               return (
-                <div className={styles.CategoryBox} onClick={handleClickCategory}>
-                  {categoryName}
+                <div
+                  className={styles.CategoryBox}
+                  onClick={() => handleClickCategory(categoryName, index)}
+                >
+                  {presetCategoryList.product[index] ? (
+                    <span>{`${categoryName} > ${presetCategoryList.product[index].productName}`}</span>
+                  ) : (
+                    <span>{categoryName}</span>
+                  )}
                 </div>
               );
             })}
@@ -81,7 +113,7 @@ function PresetInput(): ReactElement {
           <hr />
           <div className={styles.SelectItem}>
             {productArr.length === 0 ? (
-              presetCategoryList.length === 0 ? (
+              presetCategoryList?.categoryName.length === 0 ? (
                 '선택한 카테고리가 없습니다'
               ) : (
                 '상품이 존재하지 않습니다'
@@ -90,7 +122,7 @@ function PresetInput(): ReactElement {
               <>
                 <Title text='상품 선택' />
                 {productArr.map((product) => (
-                  <ProductPreset product={product} />
+                  <ProductPreset product={product} onClick={() => handleOnclickProduct(product)} />
                 ))}
               </>
             )}

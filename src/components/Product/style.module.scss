@@ -4,6 +4,9 @@
   justify-content: space-between;
   padding: 4px;
   margin: 4px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .DescriptionWrapper {
