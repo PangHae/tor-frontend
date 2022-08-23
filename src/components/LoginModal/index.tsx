@@ -36,12 +36,14 @@ function LoginModal(): ReactElement {
       };
       signUp(requestData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loginRes]);
 
   useEffect(() => {
     if (signUpRes) {
       setUser(signUpRes);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signUpRes]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {

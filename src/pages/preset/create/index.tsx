@@ -13,6 +13,7 @@ function PresetCreate() {
     if (!user.userName) {
       router.push('/');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
