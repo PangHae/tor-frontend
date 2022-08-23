@@ -1,10 +1,7 @@
 import PresetType from './preset';
 import ProductType from './product';
 import CartActionType from './cartAction';
+import CartItemType from './cartItem';
+import CategoryNProduct from './categoryNProduct';
 
-export type CategoryNProduct = {
-  categoryName: string[];
-  product: ProductType[];
-};
-
-export type { PresetType, ProductType, CartActionType };
+export type { PresetType, ProductType, CartActionType, CartItemType, CategoryNProduct };
