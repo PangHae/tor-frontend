@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
 import axios from 'axios';
 
 import ShortMenu from 'src/components/Menu/Short';
@@ -6,11 +9,21 @@ import PresetDetail from 'src/components/Preset/Detail';
 
 import { PresetType } from 'src/types';
 
+import { userState } from 'src/hooks/recoil/atoms/user';
+
 interface Props {
   preset: PresetType;
 }
 
 function PresetName({ preset }: Props) {
+  const [user] = useRecoilState(userState);
+  const router = useRouter();
+  useEffect(() => {
+    if (!user) {
+      router.push('/');
+    }
+  }, []);
+
   return (
     <>
       <Head>
