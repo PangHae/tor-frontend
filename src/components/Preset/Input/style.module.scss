@@ -6,6 +6,9 @@
   & > .PresetInfoSet {
     padding: 20px;
     margin: 10px;
+    & > .SetCategory {
+      display: flex;
+    }
   }
   & > .SelectField {
     padding: 20px;
