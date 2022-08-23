@@ -28,3 +28,27 @@
   font-size: 20px;
   font-weight: bolder;
 }
+
+.TotalPrice {
+  display: flex;
+  width: 1200px;
+  height: 60px;
+  line-height: 60px;
+  position: fixed;
+  background-color: rgb(229, 198, 239);
+  bottom: 0;
+  & > .TotalQuantity {
+    flex: 1.5;
+    text-align: center;
+  }
+  & > .TotalPriceDetail {
+    flex: 1.5;
+    text-align: right;
+    font-size: 28px;
+    font-weight: bolder;
+  }
+  & > button {
+    flex: 0.8;
+    margin: auto 200px auto 40px;
+  }
+}

@@ -97,10 +97,6 @@ function PresetModal({ preset, onClose }: props): ReactElement {
       type: 'ADD',
       preset: { ...preset, checked: true, products: productListToCart },
     });
-    // if ('cart' in cookie) {
-    //   productListToCart.push(JSON.parse(cookie.cart));
-    //   destroyCookie(null, 'cart');
-    // }
     onClose();
   };
 
