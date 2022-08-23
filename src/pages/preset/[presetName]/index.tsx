@@ -4,12 +4,15 @@ import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
 
-import ShortMenu from 'src/components/Menu/Short';
+// import ShortMenu from 'src/components/Menu/Short';
 import PresetDetail from 'src/components/Preset/Detail';
 
 import { PresetType } from 'src/types';
 
 import { userState } from 'src/hooks/recoil/atoms/user';
+import SearchTab from 'src/components/SearchTab';
+import Menu from 'src/components/Menu';
+import SubMenu from 'src/components/Menu/Sub';
 
 interface Props {
   preset: PresetType;
@@ -31,7 +34,9 @@ function PresetName({ preset }: Props) {
         <title>{preset.presetName}</title>
       </Head>
       <main>
-        <ShortMenu />
+        <SearchTab />
+        <Menu />
+        <SubMenu isInDetail />
         <hr style={{ margin: '0', marginBottom: '10px' }} />
         <PresetDetail originalPreset={preset} />
       </main>
