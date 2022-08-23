@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import { BsHeartFill } from 'react-icons/bs';
 
 import ProductCart from 'src/components/Product/Cart';
@@ -8,6 +8,10 @@ import Button from 'src/components/base/Button';
 
 import { PresetType, ProductType } from 'src/types';
 
+import { usePresetDispatch } from 'src/hooks/context/cartContext';
+
+import useAxios from 'src/hooks/useAxios';
+
 import styles from './style.module.scss';
 
 interface props {
@@ -16,21 +20,47 @@ interface props {
 }
 
 function PresetModal({ preset, onClose }: props): ReactElement {
-  const [cartProducts, setCartProducts] = useState<ProductType[]>(
-    preset.products!.map((product) => {
-      return { ...product };
-    }),
-  );
-  const [totalPrice, setTotalPrice] = useState(
-    preset.products!.reduce((priceSum, product) => priceSum + product.price, 0),
-  );
+  const { fetchData: getProducts, res: productData } = useAxios({
+    method: 'get',
+    url: `/api/product/getProductList/`,
+  });
+
+  const presetDispatch = usePresetDispatch();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [productList, setProductList] = useState<ProductType[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getProducts(preset.presetName);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (productData) {
+      setTotalPrice(
+        productData.content.reduce(
+          (priceSum: number, product: ProductType) => priceSum + product.price,
+          0,
+        ),
+      );
+      setProductList(
+        productData.content.map((product: ProductType) => {
+          return { ...product, checked: true, count: 1 };
+        }),
+      );
+      setLoading(true);
+    }
+  }, [productData]);
+
+  const getTotalPrice = () =>
+    productList.reduce((prev, curr) => prev + (curr.checked ? curr.price * curr.count : 0), 0);
 
   const handleTotalPriceAdd = (productID: number) => {
-    setCartProducts(
-      cartProducts.map((product) => {
+    setProductList(
+      productList.map((product) => {
         if (product.productId === productID) {
           product.count += 1;
-          setTotalPrice(totalPrice + product.price);
+          setTotalPrice(getTotalPrice());
         }
         return product;
       }),
@@ -38,25 +68,45 @@ function PresetModal({ preset, onClose }: props): ReactElement {
   };
 
   const handleTotalPriceSub = (productID: number) => {
-    setCartProducts(
-      cartProducts.map((product) => {
+    setProductList(
+      productList.map((product) => {
         if (product.productId === productID) {
           product.count -= 1;
-          setTotalPrice(totalPrice - product.price);
+          setTotalPrice(getTotalPrice());
         }
         return product;
       }),
     );
   };
 
-  const handleClose = () => {
+  const handleProductCheck = (productId: number, checked: boolean) => {
+    setProductList(
+      productList.map((product) => {
+        if (product.productId === productId) {
+          product.checked = checked;
+          setTotalPrice(getTotalPrice());
+        }
+        return { ...product };
+      }),
+    );
+  };
+
+  const handleAddCart = () => {
+    const productListToCart = productList.filter((product) => product.checked && product.count > 0);
+    presetDispatch!({
+      type: 'ADD',
+      preset: { ...preset, checked: true, products: productListToCart },
+    });
+    // if ('cart' in cookie) {
+    //   productListToCart.push(JSON.parse(cookie.cart));
+    //   destroyCookie(null, 'cart');
+    // }
     onClose();
-    setCartProducts(preset.products!);
   };
 
   return (
     <>
-      <div className={styles.Background} onClick={handleClose} />
+      <div className={styles.Background} onClick={onClose} />
       <Column className={styles.Modal}>
         <Column>
           <p className={styles.Producer}>{preset.producer} 님의</p>
@@ -70,28 +120,38 @@ function PresetModal({ preset, onClose }: props): ReactElement {
           </Row>
           <p>{preset.presetContent}</p>
         </Column>
-        <div className={styles.ProductList}>
-          {preset.products!.map((product) => (
-            <ProductCart
-              key={product.productId}
-              funcBind={[handleTotalPriceAdd, handleTotalPriceSub]}
-              product={product}
-            />
-          ))}
-        </div>
-        <Row className={styles.TotalRow}>
-          <Row className={styles.TotalCountWrapper}>
-            <p>총</p>
-            <p className={styles.ProductCount}>{preset.products!.length}</p>
-            <p>개 상품</p>
-          </Row>
-          <p className={styles.ProductTotalPrice}>{` ${totalPrice} 원`}</p>
-        </Row>
+        {loading && (
+          <>
+            <div className={styles.ProductList}>
+              {productList.map((product: ProductType) => (
+                <ProductCart
+                  key={product.productId}
+                  funcBind={[handleTotalPriceAdd, handleTotalPriceSub]}
+                  onProductCheck={handleProductCheck}
+                  product={product}
+                  isCheckBoxShow
+                />
+              ))}
+            </div>
+            <Row className={styles.TotalRow}>
+              <Row className={styles.TotalCountWrapper}>
+                <p>총</p>
+                <p className={styles.ProductCount}>
+                  {productList.filter((product) => product.checked && product.count > 0).length}
+                </p>
+                <p>개 상품</p>
+              </Row>
+              <p className={styles.ProductTotalPrice}>{` ${totalPrice} 원`}</p>
+            </Row>
+          </>
+        )}
         <Row className={styles.ButtonWrapper}>
-          <Button classname='CloseModalButton' onClick={handleClose}>
+          <Button classname='CloseModalButton' onClick={onClose}>
             취소
           </Button>
-          <Button classname='AddCartButton'>전체 장바구니 담기</Button>
+          <Button classname='AddCartButton' onClick={handleAddCart}>
+            전체 장바구니 담기
+          </Button>
         </Row>
       </Column>
     </>

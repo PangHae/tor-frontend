@@ -10,91 +10,99 @@ import Button from 'src/components/base/Button';
 
 import { ProductType } from 'src/types';
 
-import styles from '../style.module.scss';
+import styles from './style.module.scss';
 
 interface props {
   product: ProductType;
+  presetChecked?: boolean;
   funcBind?: [(productID: number) => void, (productID: number) => void];
-  cartFuncBind?: [(productID: number) => void, (productID: number) => void];
+  onProductCheck?: (productID: number, checked: boolean) => void;
   isCheckBoxShow?: boolean;
 }
 
-function ProductCart({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): ReactElement {
+function ProductCart({
+  product,
+  presetChecked,
+  funcBind,
+  onProductCheck,
+  isCheckBoxShow,
+}: props): ReactElement {
   const [onTotalPriceAdd, onTotalPriceSub] = funcBind || [
-    (presetId: number) => {},
-    (presetId: number) => {},
+    (productID: number) => {},
+    (productID: number) => {},
   ];
-  const [handleProductChecked, handleProductUnchecked] = cartFuncBind || [
-    (presetId: number) => {},
-    (presetId: number) => {},
-  ];
-  const [price, setPrice] = useState(product.price);
-  const [count, setCount] = useState(product.count);
+
+  // const [price, setPrice] = useState(product.price);
+  // const [count, setCount] = useState(product.count);
+  // const [checked, setChecked] = useState(true);
   const handleAdd = () => {
-    setPrice(price + product.price);
-    setCount(count + 1);
+    // setPrice(price + product.price);
+    // setCount(count + 1);
     onTotalPriceAdd(product.productId);
   };
   const handleSub = () => {
-    if (count > 0) {
-      setPrice(price - product.price);
-      setCount(count - 1);
+    if (product.count > 0) {
+      // setPrice(price - product.price);
+      // setCount(count - 1);
       onTotalPriceSub(product.productId);
     }
   };
 
-  const handleChecked = (e: FormEvent<HTMLInputElement>) => {
-    if (e.currentTarget.checked) {
-      handleProductChecked(product.productId);
-    } else {
-      handleProductUnchecked(product.productId);
-    }
+  const handleChecked = () => {
+    onProductCheck!(product.productId, !product.checked);
+    // setChecked(!checked);
   };
 
   return (
-    <>
+    <Row
+      className={cx(
+        styles.Wrapper,
+        !(product.checked && product.count > 0 && presetChecked) && styles.Checked,
+      )}
+    >
       {isCheckBoxShow && (
         <input type='checkbox' checked={product.checked} onChange={handleChecked} />
       )}
-      <Row className={styles.Wrapper}>
-        <Row className={styles.Flex3}>
-          <Image src='/image/temp_preset.jpg' alt='product image' width={100} height={130} />
-          <Column className={styles.DescriptionWrapper}>
-            <Row className={styles.Title}>
-              <p>[{product.company}]</p>
-              <p>{product.productName}</p>
+      <Row className={styles.Flex3}>
+        <Image src='/image/temp_preset.jpg' alt='product image' width={100} height={130} />
+        <Column className={styles.DescriptionWrapper}>
+          <Row className={styles.Title}>
+            <p>[{product.company}]</p>
+            <p>{product.productName}</p>
+          </Row>
+          <Row className={styles.Content}>
+            <p>
+              {+product.weight / 1000 < 1 ? `${product.weight} g` : `${+product.weight / 1000} kg`}
+            </p>
+            <p>{product.category}</p>
+            <Row className={styles.ScoreWrapper}>
+              <GiRoundStar color='#FFDC46' size={14} />
+              <p>{product.score}</p>
             </Row>
-            <Row className={styles.Content}>
-              <p>{product.weight}</p>
-              <p>{product.category}</p>
-              <Row className={styles.ScoreWrapper}>
-                <GiRoundStar color='#FFDC46' size={14} />
-                <p>{product.score}</p>
-              </Row>
-            </Row>
-          </Column>
-        </Row>
-        <Row className={cx(styles.Flex1, styles.ButtonWrapper)}>
-          <Button classname='ModalProductButton' onClick={handleSub}>
-            -
-          </Button>
-          <p>{count}</p>
-          <Button classname='ModalProductButton' onClick={handleAdd}>
-            +
-          </Button>
-        </Row>
-        <Row className={styles.Flex1}>
-          <p>{`${price.toLocaleString()}원`}</p>
-        </Row>
+          </Row>
+        </Column>
       </Row>
-    </>
+      <Row className={cx(styles.Flex1, styles.ButtonWrapper)}>
+        <Button classname='ModalProductButton' onClick={handleSub}>
+          -
+        </Button>
+        <p>{product.count}</p>
+        <Button classname='ModalProductButton' onClick={handleAdd}>
+          +
+        </Button>
+      </Row>
+      <Row className={styles.Flex1}>
+        <p>{`${product.price.toLocaleString()}원`}</p>
+      </Row>
+    </Row>
   );
 }
 
 ProductCart.defaultProps = {
   isCheckBoxShow: false,
-  funcBind: [(presetId: number) => {}, (presetId: number) => {}],
-  cartFuncBind: [(presetId: number) => {}, (presetId: number) => {}],
+  presetChecked: true,
+  funcBind: [(productID: number) => {}, (productID: number) => {}],
+  onProductCheck: (productID: number) => {},
 };
 
 export default ProductCart;
