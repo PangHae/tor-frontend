@@ -1,14 +1,18 @@
 import Link from 'next/link';
 import React, { ChangeEventHandler, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { IoSearchSharp } from 'react-icons/io5';
+
 import Button from 'src/components/base/Button';
 import Input from 'src/components/base/Input';
 import CategoryList from 'src/components/Category/List';
 import useAxios from 'src/hooks/useAxios';
 
+import { userState } from 'src/hooks/recoil/atoms/user';
 import styles from './subMenu.module.scss';
 
 function SubMenu(): React.ReactElement {
+  const [user] = useRecoilState(userState);
   const [randCategory, setRandCategory] = useState<string[]>([]);
   const [clickedCategory, setClickedCategory] = useState('');
   const { fetchData: getPresetCategories, res: getPresetCategoriesRes } = useAxios({
@@ -36,7 +40,7 @@ function SubMenu(): React.ReactElement {
   return (
     <>
       <div className={styles.SubMenu}>
-        <Link href='/cotton'>
+        <Link href={`/${user.userId}`}>
           <Button value='내 모음집' style={{ margin: 'auto auto auto 10%' }}>
             <p>내 구매 목록</p>
           </Button>
