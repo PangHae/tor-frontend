@@ -50,6 +50,7 @@ function CartList(): ReactElement {
     if (done) {
       router.push('/');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [done]);
 
   const handlePresetCheck = (presetId: number) => {
@@ -139,7 +140,6 @@ function CartList(): ReactElement {
           items[product.productId.toString()] = product.count;
         }
       });
-      console.log(items);
       const requestData = {
         userId: 'cotton',
         presetId: preset.presetId,
