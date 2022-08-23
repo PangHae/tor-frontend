@@ -15,7 +15,7 @@ function LoginModal(): ReactElement {
   const [, setUser] = useRecoilState(userState);
   const { fetchData: signUp, res: signUpRes } = useAxios({
     method: 'post',
-    url: '/api/login/singUp',
+    url: '/api/login/signUp',
   });
   const { fetchData: getLogin, res: loginRes } = useAxios({
     method: 'get',
@@ -25,8 +25,7 @@ function LoginModal(): ReactElement {
 
   useEffect(() => {
     if (loginRes) {
-      console.log(loginRes);
-      //   setUser(loginRes);
+      setUser(loginRes.userName as string);
     }
     if (loginRes === '') {
       const requestData = {
@@ -41,7 +40,7 @@ function LoginModal(): ReactElement {
 
   useEffect(() => {
     if (signUpRes) {
-      console.log(signUpRes);
+      setUser(signUpRes.userName);
     }
   }, [signUpRes]);
 
