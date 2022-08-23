@@ -25,7 +25,7 @@ function LoginModal(): ReactElement {
 
   useEffect(() => {
     if (loginRes) {
-      setUser(loginRes.userName as string);
+      setUser(loginRes);
     }
     if (loginRes === '') {
       const requestData = {
@@ -40,7 +40,7 @@ function LoginModal(): ReactElement {
 
   useEffect(() => {
     if (signUpRes) {
-      setUser(signUpRes.userName);
+      setUser(signUpRes);
     }
   }, [signUpRes]);
 

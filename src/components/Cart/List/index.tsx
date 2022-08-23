@@ -1,5 +1,6 @@
 import { ReactElement, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
 
 import Button from 'src/components/base/Button';
 import Column from 'src/components/base/Column';
@@ -12,10 +13,12 @@ import { PresetType, CartItemType } from 'src/types';
 import useAxios from 'src/hooks/useAxios';
 
 import { usePresetState, usePresetDispatch } from 'src/hooks/context/cartContext';
+import { userState } from 'src/hooks/recoil/atoms/user';
 
 import styles from './style.module.scss';
 
 function CartList(): ReactElement {
+  const [user] = useRecoilState(userState);
   const presetState = usePresetState();
   const presetReducer = usePresetDispatch();
   const { fetchData: buyPreset } = useAxios({
@@ -141,7 +144,7 @@ function CartList(): ReactElement {
         }
       });
       const requestData = {
-        userId: 'cotton',
+        userId: user.userId,
         presetId: preset.presetId,
         items,
       };
@@ -191,7 +194,7 @@ function CartList(): ReactElement {
               )}
               개 상품`}
             </p>
-            <p className={styles.TotalPriceDetail}>{totalPrice}원</p>
+            <p className={styles.TotalPriceDetail}>{totalPrice.toLocaleString()}원</p>
             <Button onClick={handleBuy}>구매</Button>
           </div>
         </>
