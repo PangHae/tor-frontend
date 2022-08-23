@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
 import Button from 'src/components/base/Button';
@@ -35,9 +36,11 @@ function SubMenu(): React.ReactElement {
   return (
     <>
       <div className={styles.SubMenu}>
-        <Button value='내 모음집' style={{ margin: 'auto auto auto 10%' }}>
-          <p>내 모음집</p>
-        </Button>
+        <Link href='/cotton'>
+          <Button value='내 모음집' style={{ margin: 'auto auto auto 10%' }}>
+            <p>내 구매 목록</p>
+          </Button>
+        </Link>
         <div className={styles.SubSearch}>
           <Input
             classname='UnderBarInput'
