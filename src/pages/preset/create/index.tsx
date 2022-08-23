@@ -2,8 +2,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import ShortMenu from 'src/components/Menu/Short';
+import Menu from 'src/components/Menu';
+import SubMenu from 'src/components/Menu/Sub';
 import PresetInput from 'src/components/Preset/Input';
+import SearchTab from 'src/components/SearchTab';
 import { userState } from 'src/hooks/recoil/atoms/user';
 
 function PresetCreate() {
@@ -21,7 +23,9 @@ function PresetCreate() {
         <title>추천의 유혹</title>
       </Head>
       <main>
-        <ShortMenu />
+        <SearchTab />
+        <Menu />
+        <SubMenu isInDetail />
         <PresetInput />
       </main>
     </>
