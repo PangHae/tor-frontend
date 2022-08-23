@@ -8,7 +8,7 @@ import Column from 'src/components/base/Column';
 
 import { ProductType } from 'src/types';
 
-import styles from '../style.module.scss';
+import styles from './style.module.scss';
 
 interface props {
   product: ProductType;

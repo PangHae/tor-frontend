@@ -1,4 +1,6 @@
+/* eslint-disable no-alert */
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Button from 'src/components/base/Button';
 import InputTitle from 'src/components/base/InputTitle';
 import { Title } from 'src/components/base/Title';
@@ -6,10 +8,15 @@ import CategoryModal from 'src/components/Category/Modal';
 import ProductPreset from 'src/components/Product/Preset';
 import useAxios from 'src/hooks/useAxios';
 import { CategoryNProduct, ProductType } from 'src/types';
+import CategoryList from 'src/components/Category/List';
+import Input from 'src/components/base/Input';
 
 import styles from './style.module.scss';
 
 function PresetInput(): ReactElement {
+  const router = useRouter();
+  const [randCategory, setRandCategory] = useState<string[]>([]);
+  const [clickedCategory, setClickedCategory] = useState('');
   const [presetName, setPresetName] = useState('');
   const [productArr, setProductArr] = useState<ProductType[]>([]);
   const [presetDescription, setPresetDescription] = useState('');
@@ -24,11 +31,39 @@ function PresetInput(): ReactElement {
     url: '/api/product/getProductLists',
   });
 
+  const { fetchData: addPreset, res: addPresetRes } = useAxios({
+    method: 'post',
+    url: '/api/preset/createPreset',
+  });
+
+  const { fetchData: getPresetCategories, res: getPresetCategoriesRes } = useAxios({
+    method: 'get',
+    url: '/api/category/getAllPresetCategories',
+  });
+
+  useEffect(() => {
+    getPresetCategories(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (getPresetCategoriesRes) {
+      setRandCategory(getPresetCategoriesRes.content.map((preCat: any) => preCat.categoryName));
+    }
+  }, [getPresetCategoriesRes]);
+
   useEffect(() => {
     if (getProductListRes) {
       setProductArr(getProductListRes.content);
     }
   }, [getProductListRes]);
+
+  useEffect(() => {
+    if (addPresetRes) {
+      router.push('/');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addPresetRes]);
 
   const handleCategoryModalClose = () => {
     setIsCategoryModalShow(false);
@@ -63,7 +98,37 @@ function PresetInput(): ReactElement {
   };
 
   const handleClickSave = () => {
-    // 프리셋 세이브
+    if (!presetName) {
+      alert('모음집 이름을 입력해주세요.');
+      return;
+    }
+    if (!presetDescription) {
+      alert('모음집 설명을 입력해주세요.');
+      return;
+    }
+    if (presetCategoryList.categoryName.length !== presetCategoryList.product.length) {
+      alert('선택한 카테고리의 제품을 모두 선택해주세요.');
+      return;
+    }
+    if (!clickedCategory) {
+      alert('카테고리를 선택해주세요.');
+      return;
+    }
+    const requestData = {
+      presetName,
+      presetContent: presetDescription,
+      presetCategoryName: clickedCategory,
+      producer: 'freddie',
+      items: {},
+    };
+    // eslint-disable-next-line array-callback-return
+    presetCategoryList.product.map((item, index) => {
+      requestData.items = {
+        ...requestData.items,
+        [item.productId]: presetCategoryList.categoryName[index],
+      };
+    });
+    addPreset(requestData);
   };
 
   return (
@@ -86,6 +151,11 @@ function PresetInput(): ReactElement {
           value={presetDescription}
           onChange={handleChangePresetDescript}
         />
+        <div className={styles.SetCategory}>
+          <Title text='모음집 카테고리' classname='CategoryTitle' />
+          <Input classname='ShortInput' disabled value={clickedCategory} onChange={() => {}} />
+          <CategoryList categoryList={randCategory} setCategory={setClickedCategory} />
+        </div>
       </div>
       <div className={styles.SelectField}>
         <Title classname='BigTitle' text='카테고리 및 상품 선택' />
