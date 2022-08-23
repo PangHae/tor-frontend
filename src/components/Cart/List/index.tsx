@@ -1,20 +1,28 @@
 import { ReactElement, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 import Button from 'src/components/base/Button';
 import Column from 'src/components/base/Column';
 import Row from 'src/components/base/Row';
-import CartBottomModal from 'src/components/CartBottomModal';
 import PresetCartCard from 'src/components/Preset/CartCard';
 // import ShowItems from 'src/components/ShowItems';
 
-import { PresetType } from 'src/types';
+import { PresetType, CartItemType } from 'src/types';
 
-import { usePresetState } from 'src/hooks/context/cartContext';
+import useAxios from 'src/hooks/useAxios';
+
+import { usePresetState, usePresetDispatch } from 'src/hooks/context/cartContext';
 
 import styles from './style.module.scss';
 
 function CartList(): ReactElement {
   const presetState = usePresetState();
+  const presetReducer = usePresetDispatch();
+  const { fetchData: buyPreset } = useAxios({
+    method: 'post',
+    url: '/api/preset/updatePurchaseHistory',
+  });
+  const router = useRouter();
 
   const [totalPrice, setTotalPrice] = useState(
     presetState.reduce((priceSum, preset) => {
@@ -23,7 +31,7 @@ function CartList(): ReactElement {
     }, 0),
   );
   const [presetList, setPresetList] = useState<PresetType[]>(presetState);
-
+  const [done, setDone] = useState(false);
   useEffect(() => {
     setTotalPrice(
       [...presetList].reduce(
@@ -37,6 +45,12 @@ function CartList(): ReactElement {
       ),
     );
   }, [presetList]);
+
+  useEffect(() => {
+    if (done) {
+      router.push('/');
+    }
+  }, [done]);
 
   const handlePresetCheck = (presetId: number) => {
     setPresetList(
@@ -117,6 +131,26 @@ function CartList(): ReactElement {
     );
   };
 
+  const handleBuy = () => {
+    presetList.forEach((preset) => {
+      const items: CartItemType = {};
+      preset.products!.forEach((product) => {
+        if (product.checked && product.count > 0) {
+          items[product.productId.toString()] = product.count;
+        }
+      });
+      console.log(items);
+      const requestData = {
+        userId: 'cotton',
+        presetId: preset.presetId,
+        items,
+      };
+      buyPreset(requestData);
+    });
+    setDone(true);
+    presetReducer!({ type: 'REMOVE', preset: presetList[0] });
+  };
+
   return (
     <Column className={styles.Wrapper}>
       <p className={styles.Title}>장바구니</p>
@@ -142,9 +176,24 @@ function CartList(): ReactElement {
               <p className={styles.Price}>{totalPrice.toLocaleString()}</p>
               <p>원</p>
             </Row>
-            <Button>구매</Button>
+            <Button onClick={handleBuy}>구매</Button>
           </Row>
-          <CartBottomModal totalPrice={totalPrice} />
+          <div className={styles.TotalPrice}>
+            <p className={styles.TotalQuantity}>
+              {`총 ${presetList.reduce(
+                (totalCount, currPreset) =>
+                  totalCount +
+                  currPreset.products!.reduce(
+                    (prev, currProduct) => prev + (currProduct.checked ? currProduct.count : 0),
+                    0,
+                  ),
+                0,
+              )}
+              개 상품`}
+            </p>
+            <p className={styles.TotalPriceDetail}>{totalPrice}원</p>
+            <Button onClick={handleBuy}>구매</Button>
+          </div>
         </>
       ) : null}
     </Column>
