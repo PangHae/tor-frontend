@@ -8,6 +8,7 @@ import ProductCart from 'src/components/Product/Cart';
 import Input from 'src/components/base/Input';
 // import ShowItems from 'src/components/ShowItems';
 import Button from 'src/components/base/Button';
+import useAxios from 'src/hooks/useAxios';
 
 import { PresetType } from 'src/types';
 
@@ -26,6 +27,10 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
   const [totalPrice, setTotalPrice] = useState(
     preset.products!.reduce((prev, curr) => prev + curr.price, 0),
   );
+  const { fetchData: updateRecommend, res: updateRecommendRes } = useAxios({
+    method: 'post',
+    url: '/api/preset/updatePresetRecommend',
+  });
   useEffect(() => {
     setTotalPrice(
       preset.products!.reduce(
@@ -34,6 +39,13 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
       ),
     );
   }, [preset]);
+
+  useEffect(() => {
+    if (updateRecommendRes) {
+      setPreset({ ...preset, recommend: updateRecommendRes.recommend });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateRecommendRes]);
 
   const handleTotalCheck = () => {
     setPreset({
@@ -88,6 +100,13 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
     router.push('/');
   };
 
+  const handleOnClickRecommend = () => {
+    updateRecommend({
+      userId: 'dean',
+      presetId: preset.presetId,
+    });
+  };
+
   return (
     <>
       <div className={styles.PresetDetail}>
@@ -103,6 +122,9 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
             <div className={styles.PresetRecommend}>
               <IoCartSharp size='15' color='#000' />
               <p>{preset.recommend}</p>
+              <Button classname='ReallySmallButton' onClick={handleOnClickRecommend}>
+                추천
+              </Button>
             </div>
           </div>
         </div>
