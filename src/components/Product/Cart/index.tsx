@@ -32,25 +32,17 @@ function ProductCart({
     (productID: number) => {},
   ];
 
-  // const [price, setPrice] = useState(product.price);
-  // const [count, setCount] = useState(product.count);
-  // const [checked, setChecked] = useState(true);
   const handleAdd = () => {
-    // setPrice(price + product.price);
-    // setCount(count + 1);
     onTotalPriceAdd(product.productId);
   };
   const handleSub = () => {
     if (product.count > 0) {
-      // setPrice(price - product.price);
-      // setCount(count - 1);
       onTotalPriceSub(product.productId);
     }
   };
 
   const handleChecked = () => {
     onProductCheck!(product.productId, !product.checked);
-    // setChecked(!checked);
   };
 
   return (
