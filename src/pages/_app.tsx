@@ -1,6 +1,7 @@
 import 'src/styles/globals.scss';
 import type { AppProps } from 'next/app';
 import React, { useReducer } from 'react';
+import { RecoilRoot } from 'recoil';
 
 import PresetReducer from 'src/hooks/reducer/cartReducer';
 import { PresetDispatchContext, PresetStateContext } from 'src/hooks/context/cartContext';
@@ -13,13 +14,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [state, dispatch] = useReducer(PresetReducer, []);
 
   return (
-    <PresetDispatchContext.Provider value={dispatch}>
-      <PresetStateContext.Provider value={state}>
-        <Container>
-          <Component {...pageProps} />
-        </Container>
-      </PresetStateContext.Provider>
-    </PresetDispatchContext.Provider>
+    <RecoilRoot>
+      <PresetDispatchContext.Provider value={dispatch}>
+        <PresetStateContext.Provider value={state}>
+          <Container>
+            <Component {...pageProps} />
+          </Container>
+        </PresetStateContext.Provider>
+      </PresetDispatchContext.Provider>
+    </RecoilRoot>
   );
 }
 
