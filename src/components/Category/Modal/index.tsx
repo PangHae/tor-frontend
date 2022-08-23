@@ -2,12 +2,13 @@ import React, { ReactElement, SetStateAction, useEffect } from 'react';
 import Button from 'src/components/base/Button';
 import { Title } from 'src/components/base/Title';
 import useAxios from 'src/hooks/useAxios';
+import { CategoryNProduct } from 'src/types';
 
 import styles from './style.module.scss';
 
 interface props {
-  presetCategoryList: string[];
-  setPresetCategoryList: React.Dispatch<SetStateAction<string[]>>;
+  presetCategoryList: CategoryNProduct;
+  setPresetCategoryList: React.Dispatch<SetStateAction<CategoryNProduct>>;
   onClose: () => void;
 }
 
@@ -35,7 +36,12 @@ function CategoryModal({
   }, []);
 
   const handleOnClickAddCategory = (categoryName: string) => {
-    setPresetCategoryList([...presetCategoryList, categoryName]);
+    if (!presetCategoryList.categoryName.includes(categoryName)) {
+      setPresetCategoryList({
+        categoryName: [...presetCategoryList.categoryName, categoryName],
+        product: [],
+      });
+    }
   };
 
   const handleClickTopCategory = (categoryName: string) => {
