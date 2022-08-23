@@ -44,7 +44,6 @@ function ProductCart({
   const handleChecked = () => {
     onProductCheck!(product.productId, !product.checked);
   };
-
   return (
     <Row
       className={cx(
@@ -56,7 +55,7 @@ function ProductCart({
         <input type='checkbox' checked={product.checked} onChange={handleChecked} />
       )}
       <Row className={styles.Flex3}>
-        <Image src='/image/temp_preset.jpg' alt='product image' width={100} height={130} />
+        <Image src={`/image${product.imagePath}`} alt='product image' width={100} height={130} />
         <Column className={styles.DescriptionWrapper}>
           <Row className={styles.Title}>
             <p>[{product.company}]</p>
