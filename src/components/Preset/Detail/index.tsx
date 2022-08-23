@@ -81,6 +81,7 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
       type: 'ADD',
       preset: {
         ...preset,
+        checked: true,
         products: [...preset.products!].filter((product) => product.checked && product.count > 0),
       },
     });
