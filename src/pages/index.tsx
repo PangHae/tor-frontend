@@ -6,7 +6,7 @@ import ShowItems from 'src/components/ShowItems';
 import Menu from 'src/components/Menu';
 import SubMenu from 'src/components/Menu/Sub';
 import SearchTab from 'src/components/SearchTab';
-import LoadingModal from 'src/components/LoginModal';
+import LoginModal from 'src/components/LoginModal';
 
 import { PresetType } from 'src/types';
 
@@ -37,7 +37,7 @@ function Home({ presetRanking, userPresetRanking }: Props) {
         <SearchTab />
         <Menu />
         <SubMenu />
-        {user ? (
+        {user.userName ? (
           tabs.map((tab) => (
             <ShowItems
               tabTitle={tab.tabName}
@@ -46,7 +46,7 @@ function Home({ presetRanking, userPresetRanking }: Props) {
             />
           ))
         ) : (
-          <LoadingModal />
+          <LoginModal />
         )}
       </main>
     </>

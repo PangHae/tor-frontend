@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useRecoilState } from 'recoil';
 import cx from 'classnames';
 import { IoCartSharp } from 'react-icons/io5';
 
@@ -13,6 +14,7 @@ import useAxios from 'src/hooks/useAxios';
 import { PresetType } from 'src/types';
 
 import { usePresetDispatch } from 'src/hooks/context/cartContext';
+import { userState } from 'src/hooks/recoil/atoms/user';
 
 import styles from './presetDetail.module.scss';
 
@@ -21,6 +23,7 @@ interface Props {
 }
 
 function PresetDetail({ originalPreset }: Props): React.ReactElement {
+  const [user] = useRecoilState(userState);
   const router = useRouter();
   const presetDispatch = usePresetDispatch();
   const [preset, setPreset] = useState<PresetType>(originalPreset);
@@ -102,7 +105,7 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
 
   const handleOnClickRecommend = () => {
     updateRecommend({
-      userId: 'dean',
+      userId: user.userId,
       presetId: preset.presetId,
     });
   };

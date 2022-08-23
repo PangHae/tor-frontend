@@ -6,6 +6,8 @@ import { Title } from 'src/components/base/Title';
 import useAxios from 'src/hooks/useAxios';
 import { PresetType } from 'src/types';
 
+import { useRecoilState } from 'recoil';
+import { userState } from 'src/hooks/recoil/atoms/user';
 import styles from './purchaseCard.module.scss';
 
 interface Props {
@@ -13,6 +15,7 @@ interface Props {
 }
 
 function PurchaseCard({ preset }: Props): React.ReactElement {
+  const [user] = useRecoilState(userState);
   const [star, setStar] = useState(2.5);
   const { fetchData: addStar, res: addStarRes } = useAxios({
     method: 'post',
@@ -33,7 +36,7 @@ function PurchaseCard({ preset }: Props): React.ReactElement {
     addStar({
       presetId: preset.presetId,
       // 유저 번호 동적 변경 필요
-      userNumber: 4,
+      userNumber: user.userNumber,
       preference: star,
     });
   };

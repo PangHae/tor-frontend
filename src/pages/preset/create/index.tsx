@@ -10,7 +10,7 @@ function PresetCreate() {
   const [user] = useRecoilState(userState);
   const router = useRouter();
   useEffect(() => {
-    if (!user) {
+    if (!user.userName) {
       router.push('/');
     }
   }, []);

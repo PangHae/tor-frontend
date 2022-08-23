@@ -1,8 +1,9 @@
 import { atom } from 'recoil';
+import { UserType } from 'src/types';
 
-const userState = atom({
+const userState = atom<UserType>({
   key: 'userName',
-  default: '',
+  default: {},
 });
 
 // eslint-disable-next-line import/prefer-default-export

@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import axios from 'axios';
 import ShortMenu from 'src/components/Menu/Short';
 import { Title } from 'src/components/base/Title';
 import PurchaseList from 'src/components/Purchase/List';
+
+import { userState } from 'src/hooks/recoil/atoms/user';
 
 interface Props {
   purchaseList: {
@@ -11,6 +16,13 @@ interface Props {
 }
 
 function UserPurchaseList({ purchaseList }: Props) {
+  const [user] = useRecoilState(userState);
+  const router = useRouter();
+  useEffect(() => {
+    if (!user.userName) {
+      router.push('/');
+    }
+  }, []);
   return (
     <>
       <Head>
