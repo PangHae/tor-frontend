@@ -59,15 +59,13 @@ function ShowItems({ tabTitle, presetRanking }: ShowItemProps): React.ReactEleme
               </div>
             ) : null}
             <div className={styles.ProductCardField}>
-              {presetToShow.map((preset) => {
-                return (
-                  <PresetCard
-                    key={preset.presetId}
-                    preset={preset}
-                    onClickCart={() => handleShowCartModal(preset)}
-                  />
-                );
-              })}
+              {presetToShow.map((preset) => (
+                <PresetCard
+                  key={preset.presetId.toString() + preset.presetName}
+                  preset={preset}
+                  onClickCart={() => handleShowCartModal(preset)}
+                />
+              ))}
             </div>
             {currentPage !== lastPage ? (
               <div className={styles.RightButton}>
