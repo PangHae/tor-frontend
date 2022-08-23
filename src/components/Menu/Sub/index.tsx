@@ -45,6 +45,11 @@ function SubMenu(): React.ReactElement {
             <p>내 구매 목록</p>
           </Button>
         </Link>
+        <Link href='/preset/create'>
+          <Button value='내 모음집' style={{ margin: 'auto auto auto 10%' }}>
+            <p>모음집 만들기</p>
+          </Button>
+        </Link>
         <div className={styles.SubSearch}>
           <Input
             classname='UnderBarInput'
