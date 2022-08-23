@@ -8,16 +8,23 @@ import Column from 'src/components/base/Column';
 
 import { ProductType } from 'src/types';
 
-import styles from '../style.module.scss';
+import styles from './style.module.scss';
 
 interface props {
   product: ProductType;
   funcBind?: [(productID: number) => void, (productID: number) => void];
   cartFuncBind?: [(productID: number) => void, (productID: number) => void];
   isCheckBoxShow?: boolean;
+  onClick?: () => void;
 }
 
-function ProductPreset({ product, funcBind, cartFuncBind, isCheckBoxShow }: props): ReactElement {
+function ProductPreset({
+  product,
+  funcBind,
+  cartFuncBind,
+  isCheckBoxShow,
+  onClick,
+}: props): ReactElement {
   const [onTotalPriceAdd, onTotalPriceSub] = funcBind || [
     (presetId: number) => {},
     (presetId: number) => {},
@@ -42,7 +49,7 @@ function ProductPreset({ product, funcBind, cartFuncBind, isCheckBoxShow }: prop
       {isCheckBoxShow && (
         <input type='checkbox' checked={product.checked} onChange={handleChecked} />
       )}
-      <Row className={styles.Wrapper}>
+      <Row className={styles.Wrapper} onClick={onClick}>
         <Row className={styles.Flex3}>
           <Image src='/image/temp_preset.jpg' alt='product image' width={100} height={130} />
           <Column className={styles.DescriptionWrapper}>
@@ -72,6 +79,7 @@ ProductPreset.defaultProps = {
   isCheckBoxShow: false,
   funcBind: [(presetId: number) => {}, (presetId: number) => {}],
   cartFuncBind: [(presetId: number) => {}, (presetId: number) => {}],
+  onClick: () => {},
 };
 
 export default ProductPreset;

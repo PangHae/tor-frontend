@@ -31,9 +31,11 @@ function SearchTab({ noTitle }: Props): React.ReactElement {
           placeholder='검색어를 입력해주세요'
         />
         <Link href={`/preset/${searchWord}`}>
-          <Button classname='ImageButton'>
-            <IoSearchSharp size='40' color='#000' />
-          </Button>
+          <a>
+            <Button classname='ImageButton'>
+              <IoSearchSharp size='40' color='#000' />
+            </Button>
+          </a>
         </Link>
       </div>
       <div className={styles.Buttons}>

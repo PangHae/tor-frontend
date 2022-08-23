@@ -65,6 +65,7 @@
   right: 10px;
   background: white;
   border-radius: 25px;
+  z-index: 2;
 }
 
 .CloseModalButton {
@@ -93,4 +94,14 @@
   margin-left: 10px;
   width: 60px;
   height: 40px;
+}
+
+.SmallButton {
+  width: 80px;
+  height: 20px;
+}
+
+.ReallySmallButton {
+  width: 50px;
+  height: 20px;
 }

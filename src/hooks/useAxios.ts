@@ -7,7 +7,7 @@ interface AxiosProps {
   headers?: object;
 }
 
-const URL = process.env.REACT_APP_URL;
+const URL = process.env.NEXT_PUBLIC_ADDR;
 
 const useAxios = ({ method, url, headers }: AxiosProps) => {
   const [error, setError] = useState('');
@@ -16,7 +16,6 @@ const useAxios = ({ method, url, headers }: AxiosProps) => {
   const fetchData = (data: object | string | null) => {
     let requestData;
     const tmpData = { method, url: URL + url };
-
     if (headers) {
       requestData = { ...headers };
     }
@@ -33,11 +32,10 @@ const useAxios = ({ method, url, headers }: AxiosProps) => {
     } else {
       requestData = tmpData;
     }
-
     axios(requestData)
       .then((response) => {
-        if (res && res.statusText === 'OK') {
-          setRes(response);
+        if (response.status === 200) {
+          setRes(response.data);
         }
       })
       .catch((err) => {

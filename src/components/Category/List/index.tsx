@@ -21,7 +21,7 @@ function CategoryList({ categoryList, setCategory }: Props): React.ReactElement 
       <div className={styles.CategoryButtonField}>
         {categoryList.map((categoryName) => {
           return (
-            <Button classname='CategoryButton' onClick={handleOnClickCategory}>
+            <Button classname='CategoryButton' onClick={handleOnClickCategory} key={categoryName}>
               <p>{categoryName}</p>
             </Button>
           );

@@ -8,4 +8,5 @@ export default interface PresetType {
   recommend: number;
   producer: string;
   products?: ProductType[];
+  checked?: boolean;
 }

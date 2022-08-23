@@ -1,99 +1,113 @@
 import React, { useEffect, useState } from 'react';
-import ProductType from 'src/types/product';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useRecoilState } from 'recoil';
 import cx from 'classnames';
+import { IoCartSharp } from 'react-icons/io5';
+
 import ProductCart from 'src/components/Product/Cart';
 import Input from 'src/components/base/Input';
 // import ShowItems from 'src/components/ShowItems';
 import Button from 'src/components/base/Button';
+import useAxios from 'src/hooks/useAxios';
+
 import { PresetType } from 'src/types';
-import { IoCartSharp } from 'react-icons/io5';
+
+import { usePresetDispatch } from 'src/hooks/context/cartContext';
+import { userState } from 'src/hooks/recoil/atoms/user';
 
 import styles from './presetDetail.module.scss';
 
 interface Props {
-  products: ProductType[];
-  presetInfo: PresetType;
+  originalPreset: PresetType;
 }
 
-function PresetDetail({ products, presetInfo }: Props): React.ReactElement {
-  const [totalChecked, setTotalChecked] = useState(true);
-  const [totalPrice, setTotalPrice] = useState(1);
-  const [productList, setProductList] = useState<ProductType[]>(products);
-  const [productCount, setProductCount] = useState(0);
+function PresetDetail({ originalPreset }: Props): React.ReactElement {
+  const [user] = useRecoilState(userState);
+  const router = useRouter();
+  const presetDispatch = usePresetDispatch();
+  const [preset, setPreset] = useState<PresetType>(originalPreset);
+  const [totalPrice, setTotalPrice] = useState(
+    preset.products!.reduce((prev, curr) => prev + curr.price, 0),
+  );
+  const { fetchData: updateRecommend, res: updateRecommendRes } = useAxios({
+    method: 'post',
+    url: '/api/preset/updatePresetRecommend',
+  });
+  useEffect(() => {
+    setTotalPrice(
+      preset.products!.reduce(
+        (prev, curr) => prev + (curr.checked ? curr.count * curr.price : 0),
+        0,
+      ),
+    );
+  }, [preset]);
 
   useEffect(() => {
-    const initPrice = products.reduce((priceSum, product) => priceSum + product.price, 0);
-    setTotalPrice(initPrice);
-    setProductList(products);
+    if (updateRecommendRes) {
+      setPreset({ ...preset, recommend: updateRecommendRes.recommend });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [products]);
+  }, [updateRecommendRes]);
 
-  useEffect(() => {
-    if (productList) {
-      let addTotalPrice = 0;
-      let addProductCount = 0;
-      // eslint-disable-next-line array-callback-return
-      productList.map((product) => {
-        if (product.checked) {
-          addTotalPrice += product.price * product.count;
-          addProductCount += product.count;
-        }
-      });
-      setTotalPrice(addTotalPrice);
-      setProductCount(addProductCount);
-    }
-  }, [productList, totalChecked]);
-
-  const handleOnClickTotalCheck = () => {
-    if (totalChecked) {
-      setProductList(
-        productList.map((product) => {
-          product.checked = false;
-          return product;
-        }),
-      );
-    } else {
-      setProductList(
-        productList.map((product) => {
-          product.checked = true;
-          return product;
-        }),
-      );
-    }
-    setTotalChecked(!totalChecked);
-  };
-
-  const handleOnClickCheck = (index: number) => {
-    const tmpProductList = [...productList];
-    if (tmpProductList[index].checked) {
-      tmpProductList[index].checked = false;
-    } else {
-      tmpProductList[index].checked = true;
-    }
-    setProductList(tmpProductList);
+  const handleTotalCheck = () => {
+    setPreset({
+      ...preset,
+      checked: !preset.checked,
+      products: preset.products!.map((product) => {
+        return { ...product, checked: !preset.checked };
+      }),
+    });
   };
 
   const handleOnClickAdd = (productId: number) => {
-    setProductList(
-      productList.map((product) => {
-        if (product.productId === productId) {
-          product.count += 1;
-        }
-        return product;
+    setPreset({
+      ...preset,
+      products: [...preset.products!].map((product) => {
+        return product.productId === productId
+          ? { ...product, count: product.count + 1 }
+          : { ...product };
       }),
-    );
+    });
   };
 
   const handleOnClickSub = (productId: number) => {
-    setProductList(
-      productList.map((product) => {
-        if (product.productId === productId) {
-          product.count -= 1;
-        }
-        return product;
+    setPreset({
+      ...preset,
+      products: [...preset.products!].map((product) => {
+        return product.productId === productId
+          ? { ...product, count: product.count - 1 }
+          : { ...product };
       }),
-    );
+    });
+  };
+
+  const handleProductCheck = (productId: number, checked: boolean) => {
+    setPreset({
+      ...preset,
+      products: [...preset.products!].map((product) => {
+        return product.productId === productId ? { ...product, checked } : { ...product };
+      }),
+    });
+  };
+
+  const handleAddCart = () => {
+    presetDispatch!({
+      type: 'ADD',
+      preset: {
+        ...preset,
+        checked: true,
+        products: [...preset.products!].filter((product) => product.checked && product.count > 0),
+      },
+    });
+    router.push('/');
+  };
+
+  const handleOnClickRecommend = () => {
+    updateRecommend({
+      userId: user.userId,
+      presetId: preset.presetId,
+    });
   };
 
   return (
@@ -102,15 +116,18 @@ function PresetDetail({ products, presetInfo }: Props): React.ReactElement {
         <div className={styles.PresetInfo}>
           <Image src='/image/temp_preset.jpg' alt='product image' width={240} height={300} />
           <div className={styles.PresetDescript}>
-            <p className={styles.CategoryName}>#{presetInfo.categoryName}</p>
-            <p className={styles.Producer}>{presetInfo.producer} 님의</p>
-            <p className={styles.PresetName}>{presetInfo.presetName}</p>
+            <p className={styles.CategoryName}>#{preset.categoryName}</p>
+            <p className={styles.Producer}>{preset.producer} 님의</p>
+            <p className={styles.PresetName}>{preset.presetName}</p>
             <p className={styles.PresetContent}>
-              {presetInfo.presetContent || '상품 설명이 존재하지 않습니다'}
+              {preset.presetContent || '상품 설명이 존재하지 않습니다'}
             </p>
             <div className={styles.PresetRecommend}>
               <IoCartSharp size='15' color='#000' />
-              <p>{presetInfo.recommend}</p>
+              <p>{preset.recommend}</p>
+              <Button classname='ReallySmallButton' onClick={handleOnClickRecommend}>
+                추천
+              </Button>
             </div>
           </div>
         </div>
@@ -120,8 +137,8 @@ function PresetDetail({ products, presetInfo }: Props): React.ReactElement {
             <Input
               classname='CheckBox'
               type='checkbox'
-              checked={totalChecked}
-              onClick={handleOnClickTotalCheck}
+              checked={preset.checked}
+              onClick={handleTotalCheck}
             />
             <div className={styles.TableText}>
               <p className={cx(styles.TableProductName, styles.Flex3)}>상품</p>
@@ -129,33 +146,28 @@ function PresetDetail({ products, presetInfo }: Props): React.ReactElement {
               <p className={cx(styles.TablePrice, styles.Flex1)}>가격</p>
             </div>
           </div>
-          {productList &&
-            productList.map((product, index) => {
-              return (
-                <div className={styles.ProductCheck}>
-                  <Input
-                    classname='CheckBox'
-                    type='checkbox'
-                    checked={product.checked}
-                    onClick={() => handleOnClickCheck(index)}
-                  />
-                  <ProductCart
-                    key={product.productId}
-                    product={product}
-                    funcBind={[handleOnClickAdd, handleOnClickSub]}
-                  />
-                </div>
-              );
-            })}
+          {preset.products!.map((product) => {
+            return (
+              <div className={styles.ProductCheck}>
+                <ProductCart
+                  key={product.productId}
+                  product={product}
+                  funcBind={[handleOnClickAdd, handleOnClickSub]}
+                  onProductCheck={handleProductCheck}
+                  isCheckBoxShow
+                />
+              </div>
+            );
+          })}
           <hr style={{ margin: '0', marginBottom: '10px' }} />
           {/* <ShowItems tabTitle='이 모음집 구매자들이 구매한 모음집 >' presetRanking={[]} />
           <ShowItems tabTitle='이 모음집과 비슷한 모음집 >' presetRanking={[]} /> */}
         </div>
       </div>
       <div className={styles.TotalPrice}>
-        <p className={styles.TotalQuantity}>총 {productCount}개 상품</p>
-        <p className={styles.TotalPriceDetail}>{totalPrice}원</p>
-        <Button>장바구니에 담기</Button>
+        <p className={styles.TotalQuantity}>총 {preset.products!.length}개 상품</p>
+        <p className={styles.TotalPriceDetail}>{totalPrice.toLocaleString()}원</p>
+        <Button onClick={handleAddCart}>장바구니에 담기</Button>
       </div>
     </>
   );

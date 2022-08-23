@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'src/components/base/Button';
+import Link from 'next/link';
 import { IoCartSharp } from 'react-icons/io5';
 
 import { PresetType } from 'src/types';
@@ -19,14 +20,18 @@ function PresetCard({ preset, onClickCart }: CardProps): React.ReactElement {
   };
   return (
     <div className={styles.PresetCard}>
-      <div className={styles.ImageField}>image</div>
-      <p className={styles.Producer}>{preset.producer} 님의</p>
-      <p className={styles.PresetName}>{preset.presetName}</p>
-      <p className={styles.CategoryName}>{`#${preset.categoryName}`}</p>
-      <p className={styles.BuyerNumber}>
-        <IoCartSharp size='15' color='#000' />
-        <span className={styles.Recommend}>{`${preset.recommend}명 추천`}</span>
-      </p>
+      <Link href={`/preset/${preset.presetName}`}>
+        <a>
+          <div className={styles.ImageField}>image</div>
+          <p className={styles.Producer}>{preset.producer} 님의</p>
+          <p className={styles.PresetName}>{preset.presetName}</p>
+          <p className={styles.CategoryName}>{`#${preset.categoryName}`}</p>
+          <p className={styles.BuyerNumber}>
+            <IoCartSharp size='15' color='#000' />
+            <span className={styles.Recommend}>{`${preset.recommend}명 추천`}</span>
+          </p>
+        </a>
+      </Link>
       <Button onClick={handleClickCart} classname='CartButton' value='장바구니'>
         <IoCartSharp size='28' color='#000' />
       </Button>

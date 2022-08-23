@@ -1,20 +1,36 @@
+import Link from 'next/link';
 import React, { ChangeEventHandler, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { IoSearchSharp } from 'react-icons/io5';
+
 import Button from 'src/components/base/Button';
 import Input from 'src/components/base/Input';
 import CategoryList from 'src/components/Category/List';
+import useAxios from 'src/hooks/useAxios';
 
+import { userState } from 'src/hooks/recoil/atoms/user';
 import styles from './subMenu.module.scss';
 
 function SubMenu(): React.ReactElement {
+  const [user] = useRecoilState(userState);
   const [randCategory, setRandCategory] = useState<string[]>([]);
   const [clickedCategory, setClickedCategory] = useState('');
+  const { fetchData: getPresetCategories, res: getPresetCategoriesRes } = useAxios({
+    method: 'get',
+    url: '/api/category/getAllPresetCategories',
+  });
 
   useEffect(() => {
     // 카테고리 랜덤하게 출력하도록 변경해야함
-    setRandCategory(['김치', '라면', '김밥', '수제비']);
+    getPresetCategories(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (getPresetCategoriesRes) {
+      setRandCategory(getPresetCategoriesRes.content.map((preCat: any) => preCat.categoryName));
+    }
+  }, [getPresetCategoriesRes]);
 
   const handleOnChangeCategory: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { target } = e;
@@ -24,9 +40,16 @@ function SubMenu(): React.ReactElement {
   return (
     <>
       <div className={styles.SubMenu}>
-        <Button value='내 모음집' style={{ margin: 'auto auto auto 10%' }}>
-          <p>내 모음집</p>
-        </Button>
+        <Link href={`/${user.userId}`}>
+          <Button value='내 모음집' style={{ margin: 'auto auto auto 10%' }}>
+            <p>내 구매 목록</p>
+          </Button>
+        </Link>
+        <Link href='/preset/create'>
+          <Button value='내 모음집' style={{ margin: 'auto auto auto 10%' }}>
+            <p>모음집 만들기</p>
+          </Button>
+        </Link>
         <div className={styles.SubSearch}>
           <Input
             classname='UnderBarInput'
