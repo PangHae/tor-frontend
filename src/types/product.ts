@@ -1,4 +1,5 @@
 export default interface ProductType {
+  presetName?: string;
   productId: number;
   productName: string;
   category: string;
