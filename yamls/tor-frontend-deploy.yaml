@@ -13,6 +13,10 @@ spec:
         labels:
            app: tor-frontend
       spec:
+         hostAliases:
+         - ip: "15.165.36.43"
+           hostnames:
+           - "www.tor-kurly.com"
          containers:
          - name: tor-frontend
            image: hhlee7175/tor-frontend:0.1
