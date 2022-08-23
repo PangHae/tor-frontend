@@ -11,7 +11,11 @@ import useAxios from 'src/hooks/useAxios';
 import { userState } from 'src/hooks/recoil/atoms/user';
 import styles from './subMenu.module.scss';
 
-function SubMenu(): React.ReactElement {
+interface props {
+  isInDetail?: boolean;
+}
+
+function SubMenu({ isInDetail }: props): React.ReactElement {
   const [user] = useRecoilState(userState);
   const [randCategory, setRandCategory] = useState<string[]>([]);
   const [clickedCategory, setClickedCategory] = useState('');
@@ -62,9 +66,13 @@ function SubMenu(): React.ReactElement {
           </Button>
         </div>
       </div>
-      <CategoryList categoryList={randCategory} setCategory={setClickedCategory} />
+      {!isInDetail && <CategoryList categoryList={randCategory} setCategory={setClickedCategory} />}
     </>
   );
 }
+
+SubMenu.defaultProps = {
+  isInDetail: false,
+};
 
 export default SubMenu;

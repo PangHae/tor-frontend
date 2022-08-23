@@ -18,6 +18,9 @@ function Menu({ classname }: Props): React.ReactElement {
       </div>
       <div className={styles.MainMenu}>
         {menuArray.map((name) => {
+          if (name === '모음집') {
+            return <Title classname='HoveredTitle' text={name} />;
+          }
           return <Title classname='TitleHover' key={name} text={name} />;
         })}
       </div>

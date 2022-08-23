@@ -10,11 +10,14 @@ import useAxios from 'src/hooks/useAxios';
 import { CategoryNProduct, ProductType } from 'src/types';
 import CategoryList from 'src/components/Category/List';
 import Input from 'src/components/base/Input';
+import { useRecoilState } from 'recoil';
+import { userState } from 'src/hooks/recoil/atoms/user';
 
 import styles from './style.module.scss';
 
 function PresetInput(): ReactElement {
   const router = useRouter();
+  const [user] = useRecoilState(userState);
   const [randCategory, setRandCategory] = useState<string[]>([]);
   const [clickedCategory, setClickedCategory] = useState('');
   const [presetName, setPresetName] = useState('');
@@ -118,7 +121,7 @@ function PresetInput(): ReactElement {
       presetName,
       presetContent: presetDescription,
       presetCategoryName: clickedCategory,
-      producer: 'freddie',
+      producer: user.userName,
       items: {},
     };
     // eslint-disable-next-line array-callback-return
