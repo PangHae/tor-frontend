@@ -1,0 +1,33 @@
+.PresetCard {
+  height: 200px;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(229, 198, 239);
+  & > .NameSpace {
+    display: flex;
+    flex: 1;
+    & > p {
+      padding: 10px;
+      line-height: 25px;
+      flex: 1;
+    }
+  }
+  & > .Descript {
+    display: flex;
+    flex: 3;
+    background-color: white;
+    border-radius: 4px;
+    & > .PresetContent {
+      padding: 10px;
+      flex: 3;
+    }
+    & > .GiveStar {
+      flex: 1;
+      margin: auto;
+      text-align: center;
+    }
+  }
+}
