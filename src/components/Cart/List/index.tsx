@@ -191,7 +191,7 @@ function CartList(): ReactElement {
               )}
               개 상품`}
             </p>
-            <p className={styles.TotalPriceDetail}>{totalPrice}원</p>
+            <p className={styles.TotalPriceDetail}>{totalPrice.toLocaleString()}원</p>
             <Button onClick={handleBuy}>구매</Button>
           </div>
         </>

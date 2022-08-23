@@ -163,7 +163,7 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
       </div>
       <div className={styles.TotalPrice}>
         <p className={styles.TotalQuantity}>총 {preset.products!.length}개 상품</p>
-        <p className={styles.TotalPriceDetail}>{totalPrice}원</p>
+        <p className={styles.TotalPriceDetail}>{totalPrice.toLocaleString()}원</p>
         <Button onClick={handleAddCart}>장바구니에 담기</Button>
       </div>
     </>
