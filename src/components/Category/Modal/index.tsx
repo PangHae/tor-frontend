@@ -41,6 +41,7 @@ function CategoryModal({
         categoryName: [...presetCategoryList.categoryName, categoryName],
         product: [],
       });
+      onClose();
     }
   };
 

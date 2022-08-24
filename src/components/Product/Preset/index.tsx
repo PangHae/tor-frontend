@@ -51,14 +51,18 @@ function ProductPreset({
       )}
       <Row className={styles.Wrapper} onClick={onClick}>
         <Row className={styles.Flex3}>
-          <Image src='/image/temp_preset.jpg' alt='product image' width={100} height={130} />
+          <Image src={`/image${product.imagePath}`} alt='product image' width={100} height={130} />
           <Column className={styles.DescriptionWrapper}>
             <Row className={styles.Title}>
               <p>[{product.company}]</p>
               <p>{product.productName}</p>
             </Row>
             <Row className={styles.Content}>
-              <p>{product.weight}</p>
+              <p>
+                {+product.weight / 1000 < 1
+                  ? `${product.weight} g`
+                  : `${+product.weight / 1000} kg`}
+              </p>
               <p>{product.category}</p>
               <Row className={styles.ScoreWrapper}>
                 <GiRoundStar color='#FFDC46' size={14} />
