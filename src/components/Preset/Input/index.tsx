@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-alert */
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -31,7 +32,8 @@ function PresetInput(): ReactElement {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { fetchData: getProductList, res: getProductListRes } = useAxios({
     method: 'get',
-    url: '/api/product/getProductLists',
+    url: '/product/_search',
+    elastic: true,
   });
 
   const { fetchData: addPreset, res: addPresetRes } = useAxios({
@@ -57,7 +59,16 @@ function PresetInput(): ReactElement {
 
   useEffect(() => {
     if (getProductListRes) {
-      setProductArr(getProductListRes.content);
+      setProductArr(
+        getProductListRes.hits.hits.map((hit: any) => {
+          return {
+            ...hit._source,
+            imagePath: hit._source.imagepath,
+            productName: hit._source.productname,
+            productId: hit._source.productid,
+          };
+        }),
+      );
     }
   }, [getProductListRes]);
 
@@ -78,7 +89,7 @@ function PresetInput(): ReactElement {
   const handleClickCategory = (categoryName: string, index: number) => {
     // 클릭해서 카테고리 안에 상품들 조회해서 보여줌.
     setCurrentIndex(index);
-    getProductList(`/${encodeURI(categoryName)}`);
+    getProductList(`?q=categoryname:${encodeURI(categoryName)}`);
   };
 
   const handleChangePresetName = (e: ChangeEvent) => {
@@ -117,6 +128,10 @@ function PresetInput(): ReactElement {
       alert('카테고리를 선택해주세요.');
       return;
     }
+    if (presetCategoryList.categoryName.length < 1) {
+      alert('카테고리를 1개 이상 선택해주세요.');
+      return;
+    }
     const requestData = {
       presetName,
       presetContent: presetDescription,
@@ -141,6 +156,7 @@ function PresetInput(): ReactElement {
         <hr style={{ margin: '0', marginBottom: '10px' }} />
         <InputTitle
           inputClassname='LongInput'
+          titleClassname='PresetCreateTitle'
           title='모음집 이름'
           placeholder='모음집 이름을 입력해주세요'
           value={presetName}
@@ -148,6 +164,7 @@ function PresetInput(): ReactElement {
         />
         <InputTitle
           inputClassname='LongInput'
+          titleClassname='PresetCreateTitle'
           title='설명'
           placeholder='만든 모음집을 설명해주세요. 설명은 300자로 제한됩니다.'
           inputMaxLen={300}
@@ -201,7 +218,9 @@ function PresetInput(): ReactElement {
             )}
           </div>
         </div>
-        <Button onClick={handleClickSave}>저장</Button>
+        <div className={styles.ButtonWrapper}>
+          <Button onClick={handleClickSave}>저장</Button>
+        </div>
       </div>
       {isCategoryModalShow && (
         <CategoryModal

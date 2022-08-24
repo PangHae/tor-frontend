@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useRecoilState } from 'recoil';
 import cx from 'classnames';
 import { IoCartSharp } from 'react-icons/io5';
+import RedirectModal from 'src/components/RedirectModal';
 
 import ProductCart from 'src/components/Product/Cart';
 import Input from 'src/components/base/Input';
@@ -24,9 +24,10 @@ interface Props {
 
 function PresetDetail({ originalPreset }: Props): React.ReactElement {
   const [user] = useRecoilState(userState);
-  const router = useRouter();
+  // const router = useRouter();
   const presetDispatch = usePresetDispatch();
   const [preset, setPreset] = useState<PresetType>(originalPreset);
+  const [openRedirectModal, setOpenRedirectModal] = useState(false);
   const [totalPrice, setTotalPrice] = useState(
     preset.products!.reduce((prev, curr) => prev + curr.price, 0),
   );
@@ -100,7 +101,7 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
         products: [...preset.products!].filter((product) => product.checked && product.count > 0),
       },
     });
-    router.push('/');
+    setOpenRedirectModal(true);
   };
 
   const handleOnClickRecommend = () => {
@@ -114,7 +115,12 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
     <>
       <div className={styles.PresetDetail}>
         <div className={styles.PresetInfo}>
-          <Image src='/image/temp_preset.jpg' alt='product image' width={240} height={300} />
+          <Image
+            src={`/image${preset.products![0].imagePath}`}
+            alt='product image'
+            width={240}
+            height={300}
+          />
           <div className={styles.PresetDescript}>
             <p className={styles.CategoryName}>#{preset.categoryName}</p>
             <p className={styles.Producer}>{preset.producer} 님의</p>
@@ -169,6 +175,7 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
         <p className={styles.TotalPriceDetail}>{totalPrice.toLocaleString()}원</p>
         <Button onClick={handleAddCart}>장바구니에 담기</Button>
       </div>
+      {openRedirectModal && <RedirectModal onClose={setOpenRedirectModal} />}
     </>
   );
 }

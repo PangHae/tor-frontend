@@ -1,0 +1,40 @@
+.Background {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  backdrop-filter: saturate(180%);
+  -webkit-backdrop-filter: saturate(180%);
+  background-color: rgba(100, 100, 100, 0.65);
+}
+
+.Modal {
+  position: fixed;
+  display: flex;
+  z-index: 2;
+  padding: 32px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: fit-content;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 50px;
+  border-radius: 25px;
+  background: white;
+  box-shadow: 4px 4px 8px #3a3a3a, -4px -4px 8px #4e4e4e;
+}
+
+.Center {
+  align-items: center;
+}
+
+.Buttons {
+  & > button {
+    margin: 10px;
+  }
+}

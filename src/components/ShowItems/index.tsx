@@ -25,7 +25,7 @@ function ShowItems({ tabTitle, presetRanking }: ShowItemProps): React.ReactEleme
     setLastPage(Math.ceil(presetRanking.length / 4) - 1);
     setPresetToShow(curPreset);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, presetRanking]);
 
   const handleShowCartModal = (preset: PresetType) => {
     setIsCartModalShow(true);

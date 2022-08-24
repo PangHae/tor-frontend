@@ -5,11 +5,13 @@ interface AxiosProps {
   method: 'post' | 'get' | 'put' | 'delete';
   url: string;
   headers?: object;
+  elastic?: boolean;
 }
 
 const URL = process.env.NEXT_PUBLIC_ADDR;
+const ELASTIC_URL = process.env.NEXT_PUBLIC_ELASTIC_ADDR;
 
-const useAxios = ({ method, url, headers }: AxiosProps) => {
+const useAxios = ({ method, url, headers, elastic = false }: AxiosProps) => {
   const [error, setError] = useState('');
   const [res, setRes] = useState<any>(null);
 
@@ -24,7 +26,7 @@ const useAxios = ({ method, url, headers }: AxiosProps) => {
         requestData = {
           ...requestData,
           ...tmpData,
-          url: (URL + url + data) as string,
+          url: ((elastic ? ELASTIC_URL : URL) + url + data) as string,
         };
       } else {
         requestData = { ...requestData, ...tmpData, data };

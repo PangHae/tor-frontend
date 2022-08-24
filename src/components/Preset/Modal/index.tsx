@@ -136,7 +136,7 @@ function PresetModal({ preset, onClose }: props): ReactElement {
                 </p>
                 <p>개 상품</p>
               </Row>
-              <p className={styles.ProductTotalPrice}>{` ${totalPrice} 원`}</p>
+              <p className={styles.ProductTotalPrice}>{` ${totalPrice.toLocaleString()} 원`}</p>
             </Row>
           </>
         )}

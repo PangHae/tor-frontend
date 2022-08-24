@@ -3,17 +3,11 @@
   text-align: center;
 }
 
-.TitleHover:hover {
-  color: rgb(86, 12, 123);
-  font-weight: bolder;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .CategoryTitle {
   padding: 0;
   padding-left: 18px;
   margin: auto 0;
+  width: 200px;
 }
 
 .BigTitle {
@@ -25,4 +19,8 @@
   font-weight: bolder;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.PresetCreateTitle {
+  width: 200px;
 }
