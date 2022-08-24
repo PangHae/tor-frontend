@@ -115,7 +115,12 @@ function PresetDetail({ originalPreset }: Props): React.ReactElement {
     <>
       <div className={styles.PresetDetail}>
         <div className={styles.PresetInfo}>
-          <Image src='/image/temp_preset.jpg' alt='product image' width={240} height={300} />
+          <Image
+            src={`/image${preset.products![0].imagePath}`}
+            alt='product image'
+            width={240}
+            height={300}
+          />
           <div className={styles.PresetDescript}>
             <p className={styles.CategoryName}>#{preset.categoryName}</p>
             <p className={styles.Producer}>{preset.producer} 님의</p>
