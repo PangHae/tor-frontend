@@ -1,6 +1,6 @@
 .Background {
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   top: 0;
   bottom: 0;
   left: 0;
@@ -13,7 +13,7 @@
 .Modal {
   position: fixed;
   display: flex;
-  z-index: 2;
+  z-index: 3;
   padding: 32px;
   top: 50%;
   left: 50%;
