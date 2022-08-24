@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
 
@@ -14,6 +15,7 @@ interface props {
 }
 
 function SubMenu({ isInDetail }: props): React.ReactElement {
+  const router = useRouter();
   const [randCategory, setRandCategory] = useState<string[]>([]);
   const [clickedCategory, setClickedCategory] = useState('');
   const { fetchData: getPresetCategories, res: getPresetCategoriesRes } = useAxios({
@@ -38,6 +40,18 @@ function SubMenu({ isInDetail }: props): React.ReactElement {
     setClickedCategory((target as HTMLInputElement).value);
   };
 
+  const handleClick = () => {
+    router.push(
+      `/category/${clickedCategory.includes('#') ? clickedCategory.substring(1) : clickedCategory}`,
+    );
+  };
+
+  const handleEnter = (e: any) => {
+    if (e.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   return (
     <>
       <div className={styles.SubMenu}>
@@ -52,8 +66,9 @@ function SubMenu({ isInDetail }: props): React.ReactElement {
             placeholder='카테고리를 입력해주세요.'
             value={clickedCategory}
             onChange={handleOnChangeCategory}
+            onKeyPress={handleEnter}
           />
-          <Button classname='SubMenuImageButton'>
+          <Button classname='SubMenuImageButton' onClick={handleClick}>
             <IoSearchSharp size='40' color='#000' />
           </Button>
         </div>

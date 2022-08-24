@@ -50,6 +50,12 @@ function LoginModal(): ReactElement {
     setUserInput(e.currentTarget.value);
   };
 
+  const handleEnter = (e: any) => {
+    if (e.key === 'Enter') {
+      getLogin(`/${userInput}`);
+    }
+  };
+
   const handleLogin = () => {
     getLogin(`/${userInput}`);
   };
@@ -61,6 +67,7 @@ function LoginModal(): ReactElement {
         <Input
           value={userInput}
           onChange={handleChange}
+          onKeyPress={handleEnter}
           placeholder='유저명을 입력하세요.'
           classname='UserInput'
         />
