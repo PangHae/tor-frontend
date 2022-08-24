@@ -28,7 +28,7 @@ function PresetCard({ preset, onClickCart }: CardProps): React.ReactElement {
   }, []);
 
   useEffect(() => {
-    if (productData) {
+    if (productData !== null && productData.content.length > 0) {
       setPresetImagePreset(productData.content[0].imagePath);
     }
   }, [productData]);

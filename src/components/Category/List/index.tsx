@@ -22,7 +22,7 @@ function CategoryList({ categoryList, setCategory }: Props): React.ReactElement 
         {categoryList.map((categoryName) => {
           return (
             <Button classname='CategoryButton' onClick={handleOnClickCategory} key={categoryName}>
-              <p>{categoryName}</p>
+              <p>{`#${categoryName}`}</p>
             </Button>
           );
         })}

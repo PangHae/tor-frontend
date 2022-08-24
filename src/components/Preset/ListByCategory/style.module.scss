@@ -1,0 +1,23 @@
+.Wrapper {
+  padding: 40px 100px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  row-gap: 100px;
+  justify-items: center;
+}
+
+.TitleWrapper {
+  width: 100%;
+  justify-content: center;
+}
+
+.Category {
+  font-size: 32px;
+  margin-right: 10px;
+}
+
+.Title {
+  font-size: 32px;
+  color: #aaa;
+}

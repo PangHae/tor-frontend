@@ -3,7 +3,6 @@ import Input from 'src/components/base/Input';
 import { LinkedTitle } from 'src/components/base/Title';
 import Button from 'src/components/base/Button';
 import { IoCartSharp, IoPerson, IoSearchSharp } from 'react-icons/io5';
-import { AiFillHeart } from 'react-icons/ai';
 
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
@@ -50,9 +49,6 @@ function SearchTab({ noTitle }: Props): React.ReactElement {
             </Button>
           </a>
         </Link>
-        <Button classname='ImageButton'>
-          <AiFillHeart size='40' color='#000' />
-        </Button>
         <Link href='/cart'>
           <a>
             <Button classname='ImageButton'>
