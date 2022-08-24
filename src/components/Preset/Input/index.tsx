@@ -135,7 +135,9 @@ function PresetInput(): ReactElement {
     const requestData = {
       presetName,
       presetContent: presetDescription,
-      presetCategoryName: clickedCategory,
+      presetCategoryName: clickedCategory.includes('#')
+        ? clickedCategory.substring(1)
+        : clickedCategory,
       producer: user.userName,
       items: {},
     };
