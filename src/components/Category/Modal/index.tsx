@@ -39,7 +39,7 @@ function CategoryModal({
     if (!presetCategoryList.categoryName.includes(categoryName)) {
       setPresetCategoryList({
         categoryName: [...presetCategoryList.categoryName, categoryName],
-        product: [],
+        product: [...presetCategoryList.product],
       });
       onClose();
     }
