@@ -4,11 +4,11 @@ RUN mkdir /app
 
 WORKDIR /app
 
-COPY ./package.json ./package.json
+COPY . .
 
 RUN yarn
 
-COPY ./.next ./.next
+RUN yarn run build
 
 EXPOSE 3000
 
