@@ -3,11 +3,13 @@ import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import axios from 'axios';
-import ShortMenu from 'src/components/Menu/Short';
 import { Title } from 'src/components/base/Title';
 import PurchaseList from 'src/components/Purchase/List';
 
 import { userState } from 'src/hooks/recoil/atoms/user';
+import SearchTab from 'src/components/SearchTab';
+import Menu from 'src/components/Menu';
+import SubMenu from 'src/components/Menu/Sub';
 
 interface Props {
   purchaseList: {
@@ -30,7 +32,9 @@ function UserPurchaseList({ purchaseList }: Props) {
         <title>내가 구입한 목록</title>
       </Head>
       <main>
-        <ShortMenu />
+        <SearchTab />
+        <Menu />
+        <SubMenu isInDetail />
         <Title text='내가 구입한 목록' classname='BigTitle' />
         <PurchaseList purchaseList={purchaseList.content} />
       </main>

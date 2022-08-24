@@ -63,9 +63,13 @@ function ProductCart({
             <p>{product.productName}</p>
           </Row>
           <Row className={styles.Content}>
-            <p>
-              {+product.weight / 1000 < 1 ? `${product.weight} g` : `${+product.weight / 1000} kg`}
-            </p>
+            {+product.weight > 0 && (
+              <p>
+                {+product.weight / 1000 < 1
+                  ? `${product.weight} g`
+                  : `${+product.weight / 1000} kg`}
+              </p>
+            )}
             <p>{product.category}</p>
             <Row className={styles.ScoreWrapper}>
               <GiRoundStar color='#FFDC46' size={14} />

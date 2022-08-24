@@ -21,7 +21,7 @@ function Menu({ classname }: Props): React.ReactElement {
           if (name === '모음집') {
             return <Title classname='HoveredTitle' text={name} />;
           }
-          return <Title classname='TitleHover' key={name} text={name} />;
+          return <Title key={name} text={name} />;
         })}
       </div>
     </div>
