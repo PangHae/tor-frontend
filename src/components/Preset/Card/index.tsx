@@ -1,9 +1,12 @@
-import React from 'react';
-import Button from 'src/components/base/Button';
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { IoCartSharp } from 'react-icons/io5';
 
+import Button from 'src/components/base/Button';
 import { PresetType } from 'src/types';
+
+import useAxios from 'src/hooks/useAxios';
 
 import styles from './product.module.scss';
 
@@ -14,7 +17,22 @@ interface CardProps {
 }
 
 function PresetCard({ preset, onClickCart }: CardProps): React.ReactElement {
-  // url props 추가해서 Link 연결해야함.
+  const { fetchData: getProducts, res: productData } = useAxios({
+    method: 'get',
+    url: `/api/product/getProductList/`,
+  });
+  const [presetImagePath, setPresetImagePreset] = useState('');
+  useEffect(() => {
+    getProducts(preset.presetName);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (productData) {
+      setPresetImagePreset(productData.content[0].imagePath);
+    }
+  }, [productData]);
+
   const handleClickCart = () => {
     onClickCart(preset);
   };
@@ -22,7 +40,11 @@ function PresetCard({ preset, onClickCart }: CardProps): React.ReactElement {
     <div className={styles.PresetCard}>
       <Link href={`/preset/${preset.presetName}`}>
         <a>
-          <div className={styles.ImageField}>image</div>
+          {presetImagePath ? (
+            <Image src={`/image${presetImagePath}`} width={160} height={160} />
+          ) : (
+            <div className={styles.ImageField}>image</div>
+          )}
           <p className={styles.Producer}>{preset.producer} 님의</p>
           <p className={styles.PresetName}>{preset.presetName}</p>
           <p className={styles.CategoryName}>{`#${preset.categoryName}`}</p>
